@@ -87,7 +87,7 @@ export const commentRouter = router({
     )
     .mutation(async ({ ctx, input }) => {
       const now = new Date().toISOString();
-
+      // Fix this by Adding Authentication
       const experience = await db.query.experiencesTable.findFirst({
         where: eq(experiencesTable.id, input.experienceId),
       });
@@ -135,7 +135,7 @@ export const commentRouter = router({
       const comment = await db.query.commentsTable.findFirst({
         where: eq(commentsTable.id, input.id),
       });
-
+      const userId = 1;
       if (!comment) {
         throw new TRPCError({
           code: "NOT_FOUND",
@@ -167,6 +167,7 @@ export const commentRouter = router({
   delete: protectedProcedure
     .input(z.object({ id: commentSelectSchema.shape.id }))
     .mutation(async ({ ctx, input }) => {
+      const userId = 1;
       const comment = await db.query.commentsTable.findFirst({
         where: eq(commentsTable.id, input.id),
       });
