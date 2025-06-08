@@ -10,6 +10,8 @@ import { ExperienceAttendButton } from "./ExperienceAttendButton";
 import { UserAvatarList } from "@/features/users/components/UserAvatarList";
 import { ExperienceFavoriteButton } from "./ExperienceFavoriteButton";
 import { TagList } from "@/features/tags/components/TagList";
+import { LocationData } from "@advanced-react/shared/schema/experience";
+import { LocationDisplay } from "@/features/shared/components/LocationDisplay";
 
 type ExperienceDetailsProps = {
   experience: ExperienceForDetails;
@@ -25,9 +27,10 @@ export function ExperienceDetails({ experience }: ExperienceDetailsProps) {
         <ExperienceDetailsTags experience={experience} />
         <ExperienceDetailsMeta experience={experience} />
         <ExperienceDetailsActionButtons experience={experience} />
-        <div className="border-t-2 border-neutral-200 pt-4 dark:border-neutral-800">
+        <div className="border-y-2 border-neutral-200 pt-4 dark:border-neutral-800">
           <ExperienceDetailAttendees experience={experience} />
         </div>
+        <ExperienceDetailsLocation experience={experience} />
       </div>
     </Card>
   );
@@ -104,11 +107,11 @@ function ExperienceDetailsOwnerButtons({
         >
           Edit
         </Link>
-        <ExperienceDeleteDialog
-          experience={experience}
-          onSuccess={() => router.navigate({ to: "/" })}
-        />
       </Button>
+      <ExperienceDeleteDialog
+        experience={experience}
+        onSuccess={() => router.navigate({ to: "/" })}
+      />
     </div>
   );
 }
@@ -181,4 +184,17 @@ function ExperienceDetailAttendees({
 type ExperienceDetailsTagsProps = Pick<ExperienceDetailsProps, "experience">;
 function ExperienceDetailsTags({ experience }: ExperienceDetailsTagsProps) {
   return <TagList tags={experience.tags} />;
+}
+type ExperienceDetailsLocationProps = Pick<
+  ExperienceDetailsProps,
+  "experience"
+>;
+function ExperienceDetailsLocation({
+  experience,
+}: ExperienceDetailsLocationProps) {
+  const location = experience.location
+    ? (JSON.parse(experience.location) as LocationData)
+    : null;
+  if (!location) return null;
+  return <LocationDisplay location={location} />;
 }

@@ -20,6 +20,9 @@ type ExperienceWithFavoritesCount = Experience & {
 type ExperienceWithTags = Experience & {
   tags: Tag[];
 };
+type ExperienceWithLocation = Experience & {
+  location: string;
+};
 export type ExperienceForList = ExperienceWithUser &
   ExperienceWithCommentsCount &
   ExperienceWithUserContext &
@@ -33,4 +36,5 @@ export type ExperienceForDetails = ExperienceWithUser &
   ExperienceWithAttendees &
   ExperienceWithAttendeesCount &
   ExperienceWithFavoritesCount &
-  ExperienceWithTags;
+  ExperienceWithTags &
+  ExperienceWithLocation;

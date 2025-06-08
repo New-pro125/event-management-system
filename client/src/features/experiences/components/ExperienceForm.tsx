@@ -16,6 +16,7 @@ import { TextArea } from "@/features/shared/components/ui/TextArea";
 import { Button } from "@/features/shared/components/ui/Button";
 import { useExperienceMutation } from "../hooks/useExperienceMutation";
 import FileInput from "@/features/shared/components/ui/FileInput";
+import { LocationPicker } from "@/features/shared/components/LocationPicker";
 
 type ExperienceFormData = z.infer<typeof experienceValidationSchema>;
 
@@ -115,6 +116,21 @@ export function ExperienceForm({
             </FormItem>
           )}
         />
+
+        <FormField
+          control={form.control}
+          name="location"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Venue</FormLabel>
+              <FormControl>
+                <LocationPicker {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
         <div className="flex gap-2">
           <Button type="submit" disabled={editMutation.isPending}>
             {editMutation.isPending ? "Saving..." : "Save"}

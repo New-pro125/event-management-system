@@ -57,7 +57,7 @@ export function NotificationCard({ notification }: NotificationCardProps) {
       });
       utils.notifications.unreadCount.setData(undefined, (oldUnreadCount) => {
         if (!oldUnreadCount) return;
-        return Math.maxs(oldUnreadCount - 1, 0);
+        return Math.max(oldUnreadCount - 1, 0);
       });
       return { previousData };
     },
