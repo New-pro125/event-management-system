@@ -51,7 +51,7 @@ export function ExperienceFilters({
     <Form {...form}>
       <Card>
         <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
-          <div className="flex flex-row gap-2">
+          <div className="flex flex-col gap-2 lg:flex-row">
             <FormField
               control={form.control}
               name="q"

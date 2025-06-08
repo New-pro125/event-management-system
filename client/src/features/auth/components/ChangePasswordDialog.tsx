@@ -62,7 +62,7 @@ export function ChangePasswordDialog() {
       <DialogTrigger asChild>
         <Button>Update Password</Button>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className="max-w-[calc(100%-24px)]">
         <DialogHeader>
           <DialogTitle>Change Password</DialogTitle>
         </DialogHeader>

@@ -49,7 +49,7 @@ function ProfilePage() {
   }
   return (
     <main className="space-y-4">
-      <Card className="flex flex-col items-center gap-4 px-0">
+      <Card className="flex flex-col items-center gap-4 px-2 text-center">
         <UserAvatar user={user} showName={false} className={"h-24 w-24"} />
         <h1 className="text-3xl font-bold">{user.name}</h1>
         {user.bio && (

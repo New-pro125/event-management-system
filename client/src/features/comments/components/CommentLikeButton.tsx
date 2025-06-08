@@ -112,7 +112,7 @@ export function CommentLikeButton({
       disabled={likeMutation.isPending || unlikeMutation.isPending || disabled}
     >
       <Heart
-        className={`h-4 w-4 ${isLiked ? "fill-red-500 text-red-500" : ""}`}
+        className={`h-4 w-4 ${isLiked ? "fill-red-500 text-red-500" : "text-secondary-500 dark:text-primary-500"}`}
       />
       {likesCount}
     </Button>

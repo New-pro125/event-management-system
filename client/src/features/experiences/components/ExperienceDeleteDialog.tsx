@@ -35,7 +35,7 @@ export function ExperienceDeleteDialog({
       <DialogTrigger asChild>
         <Button variant="destructive-link">Delete</Button>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className="max-w-[calc(100%-24px)]">
         <DialogHeader>
           <DialogTitle>Delete Experience</DialogTitle>
         </DialogHeader>

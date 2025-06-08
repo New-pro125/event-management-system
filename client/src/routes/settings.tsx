@@ -63,7 +63,7 @@ function SettingsPage() {
   return (
     <main>
       {settings.map((setting) => (
-        <Card className="flex items-center justify-between">
+        <Card className="mb-2 flex items-center justify-between">
           <span className="text-neutral-600 dark:text-neutral-400">
             {setting.label}
           </span>

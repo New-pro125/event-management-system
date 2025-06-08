@@ -6,10 +6,10 @@ export default {
     extend: {
       colors: {
         primary: {
-          500: "#faf5cf",
+          500: "#74DEDE",
         },
         secondary: {
-          500: "#a37d54",
+          500: "#54A2A3",
         },
       },
       maxWidth: {

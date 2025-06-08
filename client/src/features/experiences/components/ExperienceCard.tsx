@@ -85,8 +85,10 @@ type ExperienceCardMetaProps = Pick<ExperienceCardProps, "experience">;
 
 function ExperienceCardMeta({ experience }: ExperienceCardMetaProps) {
   return (
-    <div className="flex items-center gap-4 text-neutral-600 dark:text-neutral-400">
-      <time>{new Date(experience.scheduledAt).toLocaleString()}</time>
+    <div className="flex flex-col gap-4 text-neutral-600 md:flex-row md:items-center dark:text-neutral-400">
+      <time className="text-nowrap">
+        {new Date(experience.scheduledAt).toLocaleString()}
+      </time>
       {experience.url && (
         <div className="flex items-center gap-2">
           <LinkIcon

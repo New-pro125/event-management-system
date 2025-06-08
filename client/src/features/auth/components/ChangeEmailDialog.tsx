@@ -62,7 +62,7 @@ export function ChangeEmailDialog() {
       <DialogTrigger asChild>
         <Button>Update Email</Button>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className="max-w-[calc(100%-24px)]">
         <DialogHeader>
           <DialogTitle>Change Email</DialogTitle>
         </DialogHeader>

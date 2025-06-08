@@ -87,7 +87,7 @@ export default function CommentDelete({ comment }: commentDeleteProps) {
           Delete
         </Button>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className="max-w-[calc(100%-24px)]">
         <DialogHeader>
           <DialogTitle>Delete Comment</DialogTitle>
         </DialogHeader>

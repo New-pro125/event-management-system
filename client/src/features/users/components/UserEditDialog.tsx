@@ -77,7 +77,7 @@ export function UserEditDialog({ user }: UserEditDialogProps) {
       <DialogTrigger asChild>
         <Button>Edit Profile</Button>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className="max-w-[calc(100%-24px)]">
         <DialogHeader>
           <DialogTitle>Edit Profile</DialogTitle>
         </DialogHeader>

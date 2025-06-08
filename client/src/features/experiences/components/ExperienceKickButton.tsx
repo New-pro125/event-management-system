@@ -35,7 +35,7 @@ export function ExperienceKickButton({
       <DialogTrigger asChild>
         <Button variant="destructive-link">Kick</Button>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className="max-w-[calc(100%-24px)]">
         <DialogHeader>
           <DialogTitle>Kick Attendee</DialogTitle>
         </DialogHeader>
