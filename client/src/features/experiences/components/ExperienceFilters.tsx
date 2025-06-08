@@ -8,6 +8,8 @@ import {
   FormMessage,
 } from "@/features/shared/components/ui/Form";
 import Input from "@/features/shared/components/ui/Input";
+import { MultiSelect } from "@/features/shared/components/ui/MultiSelect";
+import { Tag } from "@advanced-react/server/database/schema";
 import {
   ExperienceFilterParams,
   experienceFiltersSchema,
@@ -19,10 +21,12 @@ import { useForm } from "react-hook-form";
 type ExperienceFiltersProps = {
   onFiltersChange: (filters: ExperienceFilterParams) => void;
   initialFilters?: ExperienceFilterParams;
+  tags: Tag[];
 };
 
 export function ExperienceFilters({
   onFiltersChange,
+  tags,
   initialFilters,
 }: ExperienceFiltersProps) {
   const form = useForm<ExperienceFilterParams>({
@@ -33,6 +37,9 @@ export function ExperienceFilters({
     const filters: ExperienceFilterParams = { ...values };
     if (values.q && values.q.trim()) {
       filters.q = values.q.trim();
+    }
+    if (values.tags) {
+      filters.tags = values.tags;
     }
     onFiltersChange(filters);
   });
@@ -55,6 +62,23 @@ export function ExperienceFilters({
                 </FormControl>
                 <FormMessage />
               </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="tags"
+            render={({ field }) => (
+              <MultiSelect
+                options={tags.map((tag) => ({
+                  value: tag.id.toString(),
+                  label: tag.name,
+                }))}
+                onValueChange={(tags) => {
+                  field.onChange(tags.map(Number));
+                }}
+                defaultValue={field.value?.map((tag) => tag.toString())}
+                placeholder="Select tags..."
+              />
             )}
           />
           <Button type="submit" disabled={form.formState.isSubmitting}>

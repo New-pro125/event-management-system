@@ -8,6 +8,9 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 export const Route = createFileRoute("/search")({
   component: SearchPage,
   validateSearch: experienceFiltersSchema,
+  loader: async ({ context: { trpcQueryUtils } }) => {
+    await trpcQueryUtils.tags.list.ensureData();
+  },
 });
 
 function SearchPage() {
@@ -15,8 +18,9 @@ function SearchPage() {
   const navigate = useNavigate({ from: Route.fullPath });
   const experiencesQuery = trpc.experiences.search.useInfiniteQuery(search, {
     getNextPageParam: (lastPage) => lastPage.nextCursor,
-    enabled: Boolean(search.q),
+    enabled: Boolean(search.q) || !!search.tags,
   });
+  const [tags] = trpc.tags.list.useSuspenseQuery();
   return (
     <main className="space-y-4">
       <ExperienceFilters
@@ -26,6 +30,7 @@ function SearchPage() {
           });
         }}
         initialFilters={search}
+        tags={tags}
       />
       <InfiniteScroll
         onLoadMore={!!search.q ? experiencesQuery.fetchNextPage : undefined}

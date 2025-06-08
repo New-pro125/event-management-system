@@ -9,6 +9,7 @@ import { ExperienceDeleteDialog } from "./ExperienceDeleteDialog";
 import { router } from "@/router";
 import { ExperienceAttendButton } from "./ExperienceAttendButton";
 import { ExperienceFavoriteButton } from "./ExperienceFavoriteButton";
+import { TagList } from "@/features/tags/components/TagList";
 type ExperienceCardProps = {
   experience: ExperienceForList;
 };
@@ -21,6 +22,7 @@ export function ExperienceCard({ experience }: ExperienceCardProps) {
         <div className="w-full space-y-4">
           <ExperienceCardHeader experience={experience} />
           <ExperienceCardContent experience={experience} />
+          <ExperienceCardTags experience={experience} />
           <ExperienceCardMeta experience={experience} />
           <ExperienceCardMetricButtons experience={experience} />
           <ExperienceCardActionButtons experience={experience} />
@@ -175,4 +177,8 @@ function ExperienceCardActionButtons({
     );
   }
   return null;
+}
+type ExperienceCardTagsProps = Pick<ExperienceCardProps, "experience">;
+function ExperienceCardTags({ experience }: ExperienceCardTagsProps) {
+  return <TagList tags={experience.tags} />;
 }

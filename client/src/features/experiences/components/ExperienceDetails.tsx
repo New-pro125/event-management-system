@@ -9,6 +9,7 @@ import { router } from "@/router";
 import { ExperienceAttendButton } from "./ExperienceAttendButton";
 import { UserAvatarList } from "@/features/users/components/UserAvatarList";
 import { ExperienceFavoriteButton } from "./ExperienceFavoriteButton";
+import { TagList } from "@/features/tags/components/TagList";
 
 type ExperienceDetailsProps = {
   experience: ExperienceForDetails;
@@ -21,6 +22,7 @@ export function ExperienceDetails({ experience }: ExperienceDetailsProps) {
       <div className="w-full space-y-4 p-4">
         <ExperienceDetailsHeader experience={experience} />
         <ExperienceDetailsContent experience={experience} />
+        <ExperienceDetailsTags experience={experience} />
         <ExperienceDetailsMeta experience={experience} />
         <ExperienceDetailsActionButtons experience={experience} />
         <div className="border-t-2 border-neutral-200 pt-4 dark:border-neutral-800">
@@ -175,4 +177,8 @@ function ExperienceDetailAttendees({
       </div>
     </div>
   );
+}
+type ExperienceDetailsTagsProps = Pick<ExperienceDetailsProps, "experience">;
+function ExperienceDetailsTags({ experience }: ExperienceDetailsTagsProps) {
+  return <TagList tags={experience.tags} />;
 }
