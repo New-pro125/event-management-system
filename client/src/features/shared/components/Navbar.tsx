@@ -1,5 +1,6 @@
 import {
   Bell,
+  Edit,
   Heart,
   Home,
   Search,
@@ -97,6 +98,15 @@ function NavigationOwnerLinks() {
           >
             <UserCircle2 className="h-6 w-6" />
             Profile
+          </Link>
+          <Link
+            to="/experiences/new"
+            variant={"ghost"}
+            className={navLinkClassName}
+            activeProps={{ className: activeNavLinkClassName }}
+          >
+            <Edit className="h-6 w-6" />
+            Create Experience
           </Link>
         </>
       ) : (

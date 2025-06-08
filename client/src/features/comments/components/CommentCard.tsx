@@ -7,6 +7,7 @@ import CommentDelete from "./CommentDelete";
 import { UserAvatar } from "@/features/users/components/UserAvatar";
 import Link from "@/features/shared/components/ui/Link";
 import { useCurrentUser } from "@/features/auth/hooks/useCurrentUser";
+import { CommentLikeButton } from "./CommentLikeButton";
 
 type CommentCardProps = {
   comment: CommentForList;
@@ -21,6 +22,7 @@ export function CommentCard({ comment }: CommentCardProps) {
     <Card className="space-y-4">
       <CommentCardHeader comment={comment} />
       <CommentCardContent comment={comment} />
+      <CommentCardMetricButton comment={comment} />
       <CommentCardButtons setIsEditing={setIsEditing} comment={comment} />
     </Card>
   );
@@ -74,5 +76,17 @@ function CommentCardButtons({
         <CommentDelete comment={comment} />
       )}
     </div>
+  );
+}
+type CommentCardMetricButtonProps = Pick<CommentCardProps, "comment">;
+
+function CommentCardMetricButton({ comment }: CommentCardMetricButtonProps) {
+  return (
+    <CommentLikeButton
+      commentId={comment.id}
+      isLiked={comment.isLiked}
+      likesCount={comment.likesCount}
+      disabled={(comment as CommentOptimistic).optimistic}
+    />
   );
 }

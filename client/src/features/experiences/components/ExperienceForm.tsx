@@ -17,13 +17,14 @@ import { Button } from "@/features/shared/components/ui/Button";
 import { useExperienceMutation } from "../hooks/useExperienceMutation";
 import FileInput from "@/features/shared/components/ui/FileInput";
 import { LocationPicker } from "@/features/shared/components/LocationPicker";
+import { DateTimePicker } from "@/features/shared/components/ui/DateTimePicker";
 
 type ExperienceFormData = z.infer<typeof experienceValidationSchema>;
 
 type ExperienceFormProps = {
-  experience: Experience;
+  experience?: Experience;
   onSuccess?: (id: Experience["id"]) => void;
-  onCancel?: (id: Experience["id"]) => void;
+  onCancel?: (id?: Experience["id"]) => void;
 };
 export function ExperienceForm({
   experience,
@@ -33,21 +34,25 @@ export function ExperienceForm({
   const form = useForm<ExperienceFormData>({
     resolver: zodResolver(experienceValidationSchema),
     defaultValues: {
-      id: experience.id,
-      title: experience.title,
-      content: experience.content,
-      url: experience.url,
-      scheduledAt: experience.scheduledAt,
-      location: experience.location
-        ? JSON.parse(experience.location)
+      id: experience?.id,
+      title: experience?.title,
+      content: experience?.content,
+      url: experience?.url,
+      scheduledAt: experience?.scheduledAt,
+      location: experience?.location
+        ? JSON.parse(experience?.location)
         : undefined,
     },
   });
-  const { editMutation } = useExperienceMutation({
+  const { addMutation, editMutation } = useExperienceMutation({
+    add: {
+      onSuccess,
+    },
     edit: {
       onSuccess,
     },
   });
+  const mutation = experience ? editMutation : addMutation;
   const handleSubmit = form.handleSubmit((data) => {
     const formData = new FormData();
     for (const [key, value] of Object.entries(data)) {
@@ -56,7 +61,7 @@ export function ExperienceForm({
         else formData.append(key, value as string | Blob);
       }
     }
-    editMutation.mutate(formData);
+    mutation.mutate(formData);
   });
   return (
     <Form {...form}>
@@ -102,6 +107,18 @@ export function ExperienceForm({
         />
         <FormField
           control={form.control}
+          name="scheduledAt"
+          render={({ field }) => (
+            <FormItem className="flex-1">
+              <FormControl>
+                <DateTimePicker {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
           name="image"
           render={({ field }) => (
             <FormItem>
@@ -132,13 +149,13 @@ export function ExperienceForm({
         />
 
         <div className="flex gap-2">
-          <Button type="submit" disabled={editMutation.isPending}>
-            {editMutation.isPending ? "Saving..." : "Save"}
+          <Button type="submit" disabled={mutation.isPending}>
+            {mutation.isPending ? "Saving..." : "Save"}
           </Button>
           <Button
             type={"button"}
             variant={"outline"}
-            onClick={() => onCancel?.(experience.id)}
+            onClick={() => onCancel?.(experience?.id)}
           >
             Cancel
           </Button>

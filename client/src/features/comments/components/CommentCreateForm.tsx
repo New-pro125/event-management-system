@@ -52,6 +52,8 @@ export function CommentCreateForm({ experience }: CommentCreateFormProps) {
         experience,
         userId: currentUser.id,
         user: currentUser,
+        isLiked: false,
+        likesCount: 0,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
       };

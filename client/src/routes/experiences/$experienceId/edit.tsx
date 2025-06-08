@@ -7,11 +7,7 @@ import { z } from "zod";
 
 export const Route = createFileRoute("/experiences/$experienceId/edit")({
   component: EditPage,
-  params: {
-    parse: (params) => ({
-      experienceId: z.coerce.number().parse(params.experienceId),
-    }),
-  },
+
   loader: async ({ params, context: { trpcQueryUtils } }) => {
     const { currentUser } = await trpcQueryUtils.auth.currentUser.ensureData();
     try {
@@ -38,10 +34,10 @@ function EditPage() {
   const [experience] = trpc.experiences.byId.useSuspenseQuery({
     id: experienceId,
   });
-  function navigateToExperience(id: Experience["id"]) {
+  function navigateToExperience() {
     router.navigate({
       to: "/experiences/$experienceId",
-      params: { experienceId: id },
+      params: { experienceId },
     });
   }
   return (
