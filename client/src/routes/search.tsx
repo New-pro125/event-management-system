@@ -4,6 +4,7 @@ import { InfiniteScroll } from "@/features/shared/components/InfiniteScroll";
 import { trpc } from "@/router";
 import { experienceFiltersSchema } from "@advanced-react/shared/schema/experience";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { useTranslation } from "react-i18next";
 
 export const Route = createFileRoute("/search")({
   component: SearchPage,
@@ -15,6 +16,7 @@ export const Route = createFileRoute("/search")({
 
 function SearchPage() {
   const search = Route.useSearch();
+  const { t } = useTranslation("experiences");
   const navigate = useNavigate({ from: Route.fullPath });
   const experiencesQuery = trpc.experiences.search.useInfiniteQuery(search, {
     getNextPageParam: (lastPage) => lastPage.nextCursor,
@@ -48,9 +50,7 @@ function SearchPage() {
             experiencesQuery.isFetchingNextPage || experiencesQuery.isLoading
           }
           noExperienceMessage={
-            Boolean(search.q)
-              ? "No experiences found"
-              : "Search to find experiences"
+            Boolean(search.q) ? t("list.empty") : t("list.searchPrompt")
           }
         />
       </InfiniteScroll>

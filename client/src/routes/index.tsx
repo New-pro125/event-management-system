@@ -3,7 +3,7 @@ import { trpc } from "@/router";
 import { ExperienceList } from "@/features/experiences/components/ExperienceList";
 import { InfiniteScroll } from "@/features/shared/components/InfiniteScroll";
 import { createFileRoute } from "@tanstack/react-router";
-
+import { motion, useScroll } from "framer-motion";
 export const Route = createFileRoute("/")({
   component: Index,
   loader: async ({ context: { trpcQueryUtils } }) => {
@@ -18,12 +18,22 @@ function Index() {
         getNextPageParam: (lastPage) => lastPage.nextCursor,
       },
     );
+  const { scrollYProgress } = useScroll();
   return (
-    <InfiniteScroll onLoadMore={experiencesQuery.fetchNextPage}>
-      <ExperienceList
-        experiences={pages.flatMap((page) => page.experiences)}
-        isLoading={experiencesQuery.isFetchingNextPage}
+    <>
+      <motion.div
+        id="scroll-indicator"
+        style={{
+          scaleX: scrollYProgress,
+        }}
+        className="dark:bg-primary-500 bg-secondary-500 sticky start-0 top-0 z-10 h-2 origin-left rtl:origin-right"
       />
-    </InfiniteScroll>
+      <InfiniteScroll onLoadMore={experiencesQuery.fetchNextPage}>
+        <ExperienceList
+          experiences={pages.flatMap((page) => page.experiences)}
+          isLoading={experiencesQuery.isFetchingNextPage}
+        />
+      </InfiniteScroll>
+    </>
   );
 }

@@ -3,6 +3,7 @@ import { useToast } from "@/features/shared/hooks/useToast";
 import { trpc } from "@/router";
 import { Experience, User } from "@advanced-react/server/database/schema";
 import { useParams, useSearch } from "@tanstack/react-router";
+import { useTranslation } from "react-i18next";
 type ExperienceMutationsOptions = {
   add?: {
     onSuccess?: (id: Experience["id"]) => void;
@@ -21,6 +22,7 @@ export function useExperienceMutation(
   options: ExperienceMutationsOptions = {},
 ) {
   const { toast } = useToast();
+  const { t } = useTranslation("experiences");
   const utils = trpc.useUtils();
   const { userId: pathUserId } = useParams({ strict: false });
   const { tagId: pathTagId } = useParams({ strict: false });
@@ -31,14 +33,14 @@ export function useExperienceMutation(
   const addMutation = trpc.experiences.add.useMutation({
     onSuccess: ({ id }) => {
       toast({
-        title: "Experience created",
-        description: "Your experience has been created",
+        title: t("toast.created.title"),
+        description: t("toast.created.description"),
       });
       options.add?.onSuccess?.(id);
     },
     onError: (error) => {
       toast({
-        title: "Failed to create experience",
+        title: t("toast.createFailed"),
         description: error.message,
         variant: "destructive",
       });
@@ -52,14 +54,14 @@ export function useExperienceMutation(
       ]);
 
       toast({
-        title: "Experience updated",
-        description: "Your experience has been updated successfully!",
+        title: t("toast.updated.title"),
+        description: t("toast.updated.description"),
       });
       options.edit?.onSuccess?.(id);
     },
     onError: (error) => {
       toast({
-        title: "Failed to edit experience",
+        title: t("toast.editFailed"),
         description: error.message,
         variant: "destructive",
       });
@@ -88,14 +90,14 @@ export function useExperienceMutation(
       ]);
 
       toast({
-        title: "Experience deletion done!",
-        description: "Experience deletion has done successfully!",
+        title: t("toast.deleted.title"),
+        description: t("toast.deleted.description"),
       });
       options.delete?.onSuccess?.(id);
     },
     onError: (error) => {
       toast({
-        title: "Experience deletion failed",
+        title: t("toast.deleteFailed"),
         description: error.message,
         variant: "destructive",
       });
@@ -264,7 +266,7 @@ export function useExperienceMutation(
         );
       }
       toast({
-        title: "Failed to attend experience",
+        title: t("toast.attendFailed"),
         description: error.message,
         variant: "destructive",
       });
@@ -436,7 +438,7 @@ export function useExperienceMutation(
         );
       }
       toast({
-        title: "Failed to attend experience",
+        title: t("toast.unattendFailed"),
         description: error.message,
         variant: "destructive",
       });
@@ -591,7 +593,7 @@ export function useExperienceMutation(
         );
       }
       toast({
-        title: "Failed to favorite experience",
+        title: t("toast.favoriteFailed"),
         description: error.message,
         variant: "destructive",
       });
@@ -743,14 +745,14 @@ export function useExperienceMutation(
         );
       }
       toast({
-        title: "Failed to unfavorite experience",
+        title: t("toast.unfavoriteFailed"),
         description: error.message,
         variant: "destructive",
       });
     },
   });
   const kickMutation = trpc.experiences.kickAttendee.useMutation({
-    onMutate: async ({ experienceId, userId }) => {
+    onMutate: async ({ experienceId }) => {
       await utils.users.experienceAttendees.cancel({ experienceId });
       const previousData = {
         byId: utils.users.experienceAttendees.getInfiniteData({
@@ -772,8 +774,8 @@ export function useExperienceMutation(
         },
       );
       toast({
-        title: "Attendee kicked",
-        description: "The attendee has been kicked from the experience",
+        title: t("toast.kicked.title"),
+        description: t("toast.kicked.description"),
       });
       return { previousData };
     },
@@ -786,7 +788,7 @@ export function useExperienceMutation(
         context?.previousData.byId,
       );
       toast({
-        title: "Failed to kick attendee",
+        title: t("toast.kickFailed"),
         description: error.message,
         variant: "destructive",
       });

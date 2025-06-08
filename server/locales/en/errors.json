@@ -1,0 +1,35 @@
+{
+  "notAuthenticated": "Not authenticated",
+  "auth": {
+    "emailAlreadyRegistered": "This email is already registered. Please try logging in instead.",
+    "invalidCredentials": "Invalid email or password. Please try again.",
+    "invalidPassword": "Invalid password"
+  },
+  "comment": {
+    "notFound": "Comment not found",
+    "editForbidden": "You can only edit your own comments",
+    "deleteForbidden": "You can only delete your own comments",
+    "alreadyLiked": "You have already liked this comment"
+  },
+  "experience": {
+    "notFound": "Experience not found",
+    "idRequired": "Experience ID is required",
+    "editForbidden": "You can only edit your own experiences",
+    "deleteForbidden": "You can only delete your own experiences",
+    "alreadyAttending": "You are already attending this experience",
+    "notAttending": "You are not attending this experience",
+    "kickOwnerOnly": "Only the experience owner can kick attendees",
+    "cannotKickOwner": "Cannot kick the experience owner",
+    "alreadyFavorited": "Experience already favorited"
+  },
+  "user": {
+    "notFound": "User not found",
+    "cannotFollowSelf": "You cannot follow yourself",
+    "alreadyFollowing": "You are already following this user",
+    "canUnfollowSelf": "You cannot unfollow yourself",
+    "editForbidden": "You can only edit your own profile"
+  },
+  "tag": {
+    "notFound": "Tag not found"
+  }
+}

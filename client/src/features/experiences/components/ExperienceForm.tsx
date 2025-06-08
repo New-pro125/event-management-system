@@ -1,8 +1,7 @@
-import { experienceValidationSchema } from "@advanced-react/shared/schema/experience";
-import { z } from "zod";
-import { Experience } from "@advanced-react/server/database/schema";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { LocationPicker } from "@/features/shared/components/LocationPicker";
+import { Button } from "@/features/shared/components/ui/Button";
+import { DateTimePicker } from "@/features/shared/components/ui/DateTimePicker";
+import FileInput from "@/features/shared/components/ui/FileInput";
 import {
   Form,
   FormControl,
@@ -13,11 +12,13 @@ import {
 } from "@/features/shared/components/ui/Form";
 import Input from "@/features/shared/components/ui/Input";
 import { TextArea } from "@/features/shared/components/ui/TextArea";
-import { Button } from "@/features/shared/components/ui/Button";
+import { Experience } from "@advanced-react/server/database/schema";
+import { experienceValidationSchema } from "@advanced-react/shared/schema/experience";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
+import { z } from "zod";
 import { useExperienceMutation } from "../hooks/useExperienceMutation";
-import FileInput from "@/features/shared/components/ui/FileInput";
-import { LocationPicker } from "@/features/shared/components/LocationPicker";
-import { DateTimePicker } from "@/features/shared/components/ui/DateTimePicker";
 
 type ExperienceFormData = z.infer<typeof experienceValidationSchema>;
 
@@ -31,6 +32,7 @@ export function ExperienceForm({
   onSuccess,
   onCancel,
 }: ExperienceFormProps) {
+  const { t } = useTranslation("experiences");
   const form = useForm<ExperienceFormData>({
     resolver: zodResolver(experienceValidationSchema),
     defaultValues: {
@@ -71,7 +73,7 @@ export function ExperienceForm({
           name="title"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Title</FormLabel>
+              <FormLabel>{t("form.title")}</FormLabel>
               <FormControl>
                 <Input {...field} />
               </FormControl>
@@ -84,7 +86,7 @@ export function ExperienceForm({
           name="content"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Content</FormLabel>
+              <FormLabel>{t("form.content")}</FormLabel>
               <FormControl>
                 <TextArea {...field} rows={4} />
               </FormControl>
@@ -97,7 +99,7 @@ export function ExperienceForm({
           name="url"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Link</FormLabel>
+              <FormLabel>{t("form.link")}</FormLabel>
               <FormControl>
                 <Input {...field} value={field.value as string} />
               </FormControl>
@@ -122,7 +124,7 @@ export function ExperienceForm({
           name="image"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Image</FormLabel>
+              <FormLabel>{t("form.image")}</FormLabel>
               <FormControl>
                 <FileInput
                   accept="image/*"
@@ -139,7 +141,7 @@ export function ExperienceForm({
           name="location"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Venue</FormLabel>
+              <FormLabel>{t("form.venue")}</FormLabel>
               <FormControl>
                 <LocationPicker {...field} />
               </FormControl>
@@ -150,14 +152,16 @@ export function ExperienceForm({
 
         <div className="flex gap-2">
           <Button type="submit" disabled={mutation.isPending}>
-            {mutation.isPending ? "Saving..." : "Save"}
+            {mutation.isPending
+              ? t("common:actions.saving")
+              : t("common:actions.save")}
           </Button>
           <Button
             type={"button"}
             variant={"outline"}
             onClick={() => onCancel?.(experience?.id)}
           >
-            Cancel
+            {t("common:actions.cancel")}
           </Button>
         </div>
       </form>

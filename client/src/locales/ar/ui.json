@@ -1,0 +1,20 @@
+{
+  "dialog": {
+    "close": "إغلاق"
+  },
+  "multiSelect": {
+    "placeholder": "اختر الخيارات",
+    "selectAll": "(تحديد الكل)",
+    "more": "+ {{total}} أخرى",
+    "clear": "مسح",
+    "close": "إغلاق"
+  },
+  "fileInput": {
+    "previewAlt": "معاينة"
+  },
+  "dateTimePicker": {
+    "placeholder": "اختر التاريخ والوقت",
+    "am": "ص",
+    "pm": "م"
+  }
+}

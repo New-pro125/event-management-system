@@ -1,0 +1,21 @@
+{
+  "required": "مطلوب",
+  "name": {
+    "min": "يجب ألا يق الأسم عن {{nameMin}} أحرف"
+  },
+  "email": {
+    "invalid": "يرجي إدخال عنوان بريد إلكتروني صالح "
+  },
+  "password": {
+    "min": "يجب ألا تقل كلمة المرور عن {{passwordMin}} أحرف"
+  },
+  "commaent": {
+    "required": "التعليق مطلوب"
+  },
+  "experience": {
+    "titleRequired": "العنوان مطلوب",
+    "contentRequired": "المحتوى مطلوب",
+    "invalidDate": "تاريخ غير صالح",
+    "invalidLink": "رابط غير صالح"
+  }
+}

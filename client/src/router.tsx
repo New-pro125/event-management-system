@@ -1,24 +1,58 @@
 import type { AppRouter } from "@advanced-react/server";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import {
+  createRouter as createTanStackRouter,
+  redirect,
+} from "@tanstack/react-router";
 import {
   createTRPCQueryUtils,
   createTRPCReact,
   getQueryKey,
   httpBatchLink,
+  httpLink,
   isNonJsonSerializable,
   splitLink,
   TRPCClientError,
   TRPCLink,
 } from "@trpc/react-query";
-import { httpLink } from "@trpc/react-query";
-import { env } from "./lib/utils/env";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { createRouter as createTanStackRouter } from "@tanstack/react-router";
-import { routeTree } from "./routeTree.gen";
-import Spinner from "./features/shared/components/ui/Spinner";
+import { observable } from "@trpc/server/observable";
 import { ErrorComponent } from "./features/shared/components/ErrorComponent";
 import { NotFoundComponent } from "./features/shared/components/NotFoundComponent";
-import { observable } from "@trpc/server/observable";
+import Spinner from "./features/shared/components/ui/Spinner";
+import { getCurrentLanguage } from "./lib/i18n";
+import { env } from "./lib/utils/env";
+import { routeTree } from "./routeTree.gen";
 export const trpc = createTRPCReact<AppRouter>();
+
+export const getCurrentUser = async () => {
+  const queryKey = getQueryKey(trpc.auth.currentUser);
+  const cachedUser = queryClient.getQueryData(queryKey);
+  if (cachedUser) return cachedUser;
+  try {
+    const user = await trpcQueryUtils.auth.currentUser.fetch();
+    return user;
+  } catch (error) {
+    console.error("Failed to fetch current user:", error);
+    return null;
+  }
+};
+
+export const isAuthenticated = async () => {
+  const user = await getCurrentUser();
+  return !!user;
+};
+
+export const requireAuth = async () => {
+  const authenticated = await isAuthenticated();
+  if (!authenticated) {
+    throw redirect({
+      to: "/login",
+      search: {
+        redirect: window.location.pathname,
+      },
+    });
+  }
+};
 const authLink: TRPCLink<AppRouter> = () => {
   return ({ next, op }) => {
     return observable((observer) => {
@@ -41,6 +75,7 @@ const authLink: TRPCLink<AppRouter> = () => {
   };
 };
 export const queryClient = new QueryClient();
+
 function getHeaders() {
   const queryKey = getQueryKey(trpc.auth.currentUser);
   const token = queryClient.getQueryData<{ accessToken: string }>(
@@ -48,8 +83,10 @@ function getHeaders() {
   )?.accessToken;
   return {
     Authorization: token ? `Bearer ${token}` : undefined,
+    "Accept-Language": getCurrentLanguage(),
   };
 }
+
 export const trpcClient = trpc.createClient({
   links: [
     authLink,
@@ -63,14 +100,14 @@ export const trpcClient = trpc.createClient({
         fetch(url, options) {
           return fetch(url, { ...options, credentials: "include" });
         },
-        headers: getHeaders(),
+        headers: getHeaders,
       }),
       false: httpBatchLink({
         url: env.VITE_SERVER_BASE_URL,
         fetch(url, options) {
           return fetch(url, { ...options, credentials: "include" });
         },
-        headers: getHeaders(),
+        headers: getHeaders,
       }),
     }),
   ],
@@ -80,6 +117,7 @@ export const trpcQueryUtils = createTRPCQueryUtils({
   queryClient,
   client: trpcClient,
 });
+
 export function createRouter() {
   const router = createTanStackRouter({
     routeTree,
@@ -87,6 +125,7 @@ export function createRouter() {
     scrollRestoration: true,
     context: {
       trpcQueryUtils,
+      isAuthenticated,
     },
     defaultPendingComponent: () => (
       <div className="flex justify-center">

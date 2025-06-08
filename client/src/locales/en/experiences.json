@@ -1,0 +1,71 @@
+{
+  "card": {
+    "eventDetails": "Event Details"
+  },
+  "details": {
+    "host": "Host",
+    "attendees": "Attendees ({{total}})",
+    "beFirst": "Be the first to attend!"
+  },
+  "attend": {
+    "going": "Going",
+    "notGoing": "Not Going"
+  },
+  "delete": {
+    "title": "Delete Experience",
+    "confirm": "Are you sure you want to delete this experience ? This acion cannot be undone"
+  },
+  "kick": {
+    "trigger": "Kick",
+    "title": "Kick Attendee",
+    "confirm": "Are you sure you want to kick this attendee ? This acion cannot be undone",
+    "submitting": "Kicking..."
+  },
+  "form": {
+    "title": "Title",
+    "content": "Content",
+    "link": "Link",
+    "image": "Image",
+    "venue": "Venue"
+  },
+  "filters": {
+    "searchPlaceholder": "Search experiences ...",
+    "tagsPlaceholder": "Select tags...",
+    "search": "Search"
+  },
+  "list": {
+    "empty": "No experiences found",
+    "searchPrompt": "Search to find experiences"
+  },
+  "pages": {
+    "create": "Create Experience",
+    "edit": "Edit Experience",
+    "attendeesFor": "Attendees for \"{{title}}\""
+  },
+  "toast": {
+    "created": {
+      "title": "Experience created",
+      "description": "Your experience has been created"
+    },
+    "createFailed": "Failed to create experience",
+    "updated": {
+      "title": "Experience updated",
+      "description": "Your Experience has been updated"
+    },
+    "editFailed": "Failed to edit experience",
+    "deleted": {
+      "title": "Experience deletion done!",
+      "description": "Experience deletion has done successfully!"
+    },
+    "deleteFailed": "Experience deletion failed",
+    "attendFailed": "Failed to attend experience",
+    "unattendFailed": "Failed to unattend experience",
+    "favoriteFailed": "Failed to favorite experience",
+    "unfavoriteFailed": "Failed to unfavorite experience",
+    "kicked": {
+      "title": "Attendee kicked",
+      "description": "The attendee has been kicked from the experience"
+    },
+    "kickFailed": "Failed to kick attendee"
+  }
+}

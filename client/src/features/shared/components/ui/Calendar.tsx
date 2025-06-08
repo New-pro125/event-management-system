@@ -3,6 +3,7 @@ import { ComponentProps } from "react";
 import { DayPicker } from "react-day-picker";
 
 import { buttonVariants } from "@/features/shared/components/ui/Button";
+import { useFormatters } from "@/lib/i18n/useFormatters";
 import { cn } from "@/lib/utils/cn";
 
 export type CalendarProps = ComponentProps<typeof DayPicker>;
@@ -13,28 +14,29 @@ export default function Calendar({
   showOutsideDays = true,
   ...props
 }: CalendarProps) {
+  const { dir, dateFnsLocale } = useFormatters();
   return (
     <DayPicker
       showOutsideDays={showOutsideDays}
       className={cn("p-3", className)}
       classNames={{
-        months: "flex flex-col sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0",
+        months: "flex flex-col sm:flex-row gap-4 sm:space-x-4 sm:space-y-0",
         month: "space-y-4",
         caption: "flex justify-center pt-1 relative items-center",
         caption_label: "text-sm font-medium",
-        nav: "space-x-1 flex items-center",
+        nav: "gap-1 flex items-center",
         nav_button: cn(
           buttonVariants({ variant: "outline" }),
           "h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100",
         ),
-        nav_button_previous: "absolute left-1",
-        nav_button_next: "absolute right-1",
+        nav_button_previous: "absolute start-1",
+        nav_button_next: "absolute end-1",
         table: "w-full border-collapse space-y-1",
         head_row: "flex",
         head_cell:
           "text-neutral-500 rounded-md w-9 font-normal text-[0.8rem] dark:text-neutral-400",
         row: "flex w-full mt-2",
-        cell: "h-9 w-9 text-center text-sm p-0 relative [&:has([aria-selected].day-range-end)]:rounded-r-md [&:has([aria-selected].day-outside)]:bg-neutral-100/50 [&:has([aria-selected])]:bg-neutral-100 first:[&:has([aria-selected])]:rounded-l-md last:[&:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20 dark:[&:has([aria-selected].day-outside)]:bg-neutral-800/50 dark:[&:has([aria-selected])]:bg-neutral-800",
+        cell: "h-9 w-9 text-center text-sm p-0 relative [&:has([aria-selected].day-range-end)]:rounded-e-md [&:has([aria-selected].day-outside)]:bg-neutral-100/50 [&:has([aria-selected])]:bg-neutral-100 first:[&:has([aria-selected])]:rounded-s-md last:[&:has([aria-selected])]:rounded-e-md focus-within:relative focus-within:z-20 dark:[&:has([aria-selected].day-outside)]:bg-neutral-800/50 dark:[&:has([aria-selected])]:bg-neutral-800",
         day: cn(
           buttonVariants({ variant: "ghost" }),
           "h-9 w-9 p-0 font-normal aria-selected:opacity-100",
@@ -60,6 +62,8 @@ export default function Calendar({
           <ChevronRight className={cn("h-4 w-4", className)} {...props} />
         ),
       }}
+      locale={dateFnsLocale}
+      dir={dir}
       {...props}
     />
   );

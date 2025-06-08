@@ -14,6 +14,7 @@ import { Comment } from "@advanced-react/server/database/schema";
 import { commentValidationSchema } from "@advanced-react/shared/schema/comment";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import { z } from "zod";
 
 type CommentEditFormData = z.infer<typeof commentValidationSchema>;
@@ -26,6 +27,7 @@ export default function CommentEditForm({
   setIsEditing,
 }: CommentEditFormProps) {
   const { toast } = useToast();
+  const { t } = useTranslation("comments");
   const utils = trpc.useUtils();
   const form = useForm<CommentEditFormData>({
     resolver: zodResolver(commentValidationSchema),
@@ -56,8 +58,8 @@ export default function CommentEditForm({
         },
       );
       const { dismiss } = toast({
-        title: "Comment updated",
-        description: "Your comment has been updated",
+        title: t("toast.updated.title"),
+        description: t("toast.updated.description"),
       });
       return { dismiss, previousData };
     },
@@ -70,7 +72,7 @@ export default function CommentEditForm({
         context?.previousData.byExperienceId,
       );
       toast({
-        title: "Failed to edit comment",
+        title: t("toast.editFailed"),
         description: error.message,
         variant: "destructive",
       });
@@ -100,14 +102,16 @@ export default function CommentEditForm({
           />
           <div className="flex gap-4">
             <Button type="submit" disabled={editMutation.isPending}>
-              {editMutation.isPending ? "Saving..." : "Save"}
+              {editMutation.isPending
+                ? t("common:actions.saving")
+                : t("common:actions.save")}
             </Button>
             <Button
               variant="link"
               onClick={() => setIsEditing(false)}
               disabled={editMutation.isPending}
             >
-              Cancel
+              {t("common:actions.cancel")}
             </Button>
           </div>
         </form>

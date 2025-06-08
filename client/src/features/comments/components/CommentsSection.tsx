@@ -1,10 +1,11 @@
-import { trpc } from "@/router";
-import { Experience } from "@advanced-react/server/database/schema";
-import CommentList from "./CommentsList";
-import { CommentCreateForm } from "./CommentCreateForm";
 import { ErrorComponent } from "@/features/shared/components/ErrorComponent";
 import Card from "@/features/shared/components/ui/Card";
 import Spinner from "@/features/shared/components/ui/Spinner";
+import { trpc } from "@/router";
+import { Experience } from "@advanced-react/server/database/schema";
+import { useTranslation } from "react-i18next";
+import { CommentCreateForm } from "./CommentCreateForm";
+import CommentList from "./CommentsList";
 type CommentsSectionProps = {
   experienceId: Experience["id"];
   commentsCount: number;
@@ -17,10 +18,12 @@ export function CommentsSection({
   const commentsQuery = trpc.comments.byExperienceId.useQuery({ experienceId });
   const experienceQuery = trpc.experiences.byId.useQuery({ id: experienceId });
   if (commentsQuery.error || experienceQuery.error) return <ErrorComponent />;
-
+  const { t } = useTranslation("comments");
   return (
     <div className="space-y-4">
-      <h3 className="font-semibold">Comments ({commentsCount})</h3>
+      <h3 className="font-semibold">
+        {t("section.title", { total: commentsCount })}
+      </h3>
       {commentsQuery.isPending || experienceQuery.isPending ? (
         <div className="flex justify-center py-4">
           <Spinner />

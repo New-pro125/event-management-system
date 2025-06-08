@@ -1,4 +1,5 @@
 import Spinner from "@/features/shared/components/ui/Spinner";
+import { useTranslation } from "react-i18next";
 import { UserForList, UserWithUserContext } from "../types";
 import { UserCard } from "./UserCard";
 type UserListProps = {
@@ -7,6 +8,7 @@ type UserListProps = {
   rightComponent?: (user: UserWithUserContext) => React.ReactNode;
 };
 export function UserList({ users, isLoading, rightComponent }: UserListProps) {
+  const { t } = useTranslation("users");
   return (
     <div className="flex flex-col gap-4">
       {users.map((user) => (
@@ -19,7 +21,7 @@ export function UserList({ users, isLoading, rightComponent }: UserListProps) {
       )}
       {!isLoading && users.length === 0 && (
         <div className="flex justify-center py-4">
-          <p>No users found</p>
+          <p>{t("list.empty")}</p>
         </div>
       )}
     </div>

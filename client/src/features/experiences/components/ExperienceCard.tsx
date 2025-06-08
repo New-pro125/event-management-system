@@ -1,22 +1,51 @@
-import Card from "@/features/shared/components/ui/Card";
-import { ExperienceForList } from "../types";
-import { LinkIcon, MessageSquare, User } from "lucide-react";
-import { Button } from "@/features/shared/components/ui/Button";
-import { UserAvatar } from "@/features/users/components/UserAvatar";
-import Link from "@/features/shared/components/ui/Link";
 import { useCurrentUser } from "@/features/auth/hooks/useCurrentUser";
-import { ExperienceDeleteDialog } from "./ExperienceDeleteDialog";
-import { router } from "@/router";
-import { ExperienceAttendButton } from "./ExperienceAttendButton";
-import { ExperienceFavoriteButton } from "./ExperienceFavoriteButton";
+import { Button } from "@/features/shared/components/ui/Button";
+import Card from "@/features/shared/components/ui/Card";
+import Link from "@/features/shared/components/ui/Link";
 import { TagList } from "@/features/tags/components/TagList";
+import { UserAvatar } from "@/features/users/components/UserAvatar";
+import { useFormatters } from "@/lib/i18n/useFormatters";
+import { router } from "@/router";
+import { LinkIcon, MessageSquare, User } from "lucide-react";
+import { useEffect, useRef } from "react";
+import { useTranslation } from "react-i18next";
+import { ExperienceForList } from "../types";
+import { ExperienceAttendButton } from "./ExperienceAttendButton";
+import { ExperienceDeleteDialog } from "./ExperienceDeleteDialog";
+import { ExperienceFavoriteButton } from "./ExperienceFavoriteButton";
+
 type ExperienceCardProps = {
   experience: ExperienceForList;
+  priority?: "low" | "high";
+  onVisible?: () => void;
 };
-export function ExperienceCard({ experience }: ExperienceCardProps) {
+export function ExperienceCard({
+  experience,
+  priority = "low",
+  onVisible,
+}: ExperienceCardProps) {
+  const cardRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (!onVisible) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          onVisible();
+        }
+      },
+      { threshold: 0.1, rootMargin: "0px" },
+    );
+    if (cardRef.current) {
+      observer.observe(cardRef.current);
+    }
+    return () => observer.disconnect();
+  }, [onVisible]);
   return (
-    <Card className="overflow-hidden p-0">
-      <ExperienceCardMedia experience={experience} />
+    <Card
+      className="animate-in z-0 h-[670px] max-w-[600px] overflow-hidden p-0 transition-all duration-200 hover:scale-105"
+      isAnimated
+    >
+      <ExperienceCardMedia experience={experience} priority={priority} />
       <div className="flex items-start gap-4 p-4">
         <ExperienceCardAvatar experience={experience} />
         <div className="w-full space-y-4">
@@ -44,17 +73,26 @@ function ExperienceCardAvatar({ experience }: ExperienceCardAvatarProps) {
     </Link>
   );
 }
-type ExperienceCardMediaProps = Pick<ExperienceCardProps, "experience">;
-function ExperienceCardMedia({ experience }: ExperienceCardMediaProps) {
-  if (!experience.imageUrl) {
-    return null;
-  }
+type ExperienceCardMediaProps = Pick<
+  ExperienceCardProps,
+  "experience" | "priority"
+>;
+function ExperienceCardMedia({
+  experience,
+  priority = "low",
+}: ExperienceCardMediaProps) {
+  if (!experience.imageUrl)
+    return (
+      <div className="bg-netural-100 aspect-video w-full dark:bg-neutral-700" />
+    );
   return (
-    <div className="aspect-video w-full">
+    <div className="aspect-video max-h-[338px] w-full">
       <img
         src={experience.imageUrl}
         alt={experience.title}
         className="h-full w-full object-cover"
+        loading={priority === "high" ? "eager" : "lazy"}
+        fetchPriority={priority}
       />
     </div>
   );
@@ -78,15 +116,19 @@ function ExperienceCardHeader({ experience }: ExperienceCardHeaderProps) {
 
 type ExperienceCardContentProps = Pick<ExperienceCardProps, "experience">;
 function ExperienceCardContent({ experience }: ExperienceCardContentProps) {
-  return <p>{experience.content}</p>;
+  return <p>{experience.content.slice(0, 50)}...</p>;
 }
 
 type ExperienceCardMetaProps = Pick<ExperienceCardProps, "experience">;
 
 function ExperienceCardMeta({ experience }: ExperienceCardMetaProps) {
+  const { t } = useTranslation("experiences");
+  const { formatDateTime } = useFormatters();
   return (
-    <div className="flex items-center gap-4 text-neutral-600 dark:text-neutral-400">
-      <time>{new Date(experience.scheduledAt).toLocaleString()}</time>
+    <div className="flex flex-col gap-4 text-neutral-600 md:flex-row md:items-center dark:text-neutral-400">
+      <time className="text-nowrap">
+        {formatDateTime(experience.scheduledAt)}
+      </time>
       {experience.url && (
         <div className="flex items-center gap-2">
           <LinkIcon
@@ -98,7 +140,7 @@ function ExperienceCardMeta({ experience }: ExperienceCardMetaProps) {
             target="_blank"
             className="text-secondary-500 dark:text-primary-500 hover:underline"
           >
-            Event Details
+            {t("card.eventDetails")}
           </a>
         </div>
       )}
@@ -142,6 +184,7 @@ type ExperienceCardOwnerButtonsProps = Pick<ExperienceCardProps, "experience">;
 function ExperienceCardOwnerButtons({
   experience,
 }: ExperienceCardOwnerButtonsProps) {
+  const { t } = useTranslation("common");
   return (
     <div className="flex gap-4">
       <Button asChild variant="link">
@@ -149,7 +192,7 @@ function ExperienceCardOwnerButtons({
           to="/experiences/$experienceId/edit"
           params={{ experienceId: experience.id }}
         >
-          Edit
+          {t("actions.edit")}
         </Link>
       </Button>
       <ExperienceDeleteDialog

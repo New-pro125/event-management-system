@@ -60,7 +60,7 @@ export const experienceRouter = router({
       if (!experience) {
         throw new TRPCError({
           code: "NOT_FOUND",
-          message: "Experience not found",
+          message: ctx.t("errors:experience.notFound"),
         });
       }
 
@@ -503,7 +503,7 @@ export const experienceRouter = router({
       if (!input.id) {
         throw new TRPCError({
           code: "BAD_REQUEST",
-          message: "Experience ID is required",
+          message: ctx.t("errors:experience.idRequired"),
         });
       }
 
@@ -514,14 +514,14 @@ export const experienceRouter = router({
       if (!experience) {
         throw new TRPCError({
           code: "NOT_FOUND",
-          message: "Experience not found",
+          message: ctx.t("errors:experience.notFound"),
         });
       }
 
       if (experience.userId !== ctx.user.id) {
         throw new TRPCError({
           code: "FORBIDDEN",
-          message: "You can only edit your own experiences",
+          message: ctx.t("errors:experience.editForbidden"),
         });
       }
 
@@ -557,14 +557,14 @@ export const experienceRouter = router({
       if (!experience) {
         throw new TRPCError({
           code: "NOT_FOUND",
-          message: "Experience not found",
+          message: ctx.t("errors:experience.notFound"),
         });
       }
 
       if (experience.userId !== ctx.user.id) {
         throw new TRPCError({
           code: "FORBIDDEN",
-          message: "You can only delete your own experiences",
+          message: ctx.t("errors:experience.deleteForbidden"),
         });
       }
 
@@ -585,7 +585,7 @@ export const experienceRouter = router({
       if (!experience) {
         throw new TRPCError({
           code: "NOT_FOUND",
-          message: "Experience not found",
+          message: ctx.t("errors:experience.notFound"),
         });
       }
 
@@ -600,7 +600,7 @@ export const experienceRouter = router({
       if (existingAttendee) {
         throw new TRPCError({
           code: "FORBIDDEN",
-          message: "You are already attending this experience",
+          message: ctx.t("errors:experience.alreadyAttending"),
         });
       }
 
@@ -631,7 +631,7 @@ export const experienceRouter = router({
       if (!experience) {
         throw new TRPCError({
           code: "NOT_FOUND",
-          message: "Experience not found",
+          message: ctx.t("errors:experience.notFound"),
         });
       }
 
@@ -646,7 +646,7 @@ export const experienceRouter = router({
       if (!existingAttendee) {
         throw new TRPCError({
           code: "FORBIDDEN",
-          message: "You are not attending this experience",
+          message: ctx.t("errors:experience.notAttending"),
         });
       }
 
@@ -685,21 +685,21 @@ export const experienceRouter = router({
       if (!experience) {
         throw new TRPCError({
           code: "NOT_FOUND",
-          message: "Experience not found",
+          message: ctx.t("errors:experience.notFound"),
         });
       }
 
       if (experience.userId !== ctx.user.id) {
         throw new TRPCError({
           code: "FORBIDDEN",
-          message: "Only the experience owner can kick attendees",
+          message: ctx.t("errors:experience.kickOwnerOnly"),
         });
       }
 
       if (experience.userId === input.userId) {
         throw new TRPCError({
           code: "FORBIDDEN",
-          message: "Cannot kick the experience owner",
+          message: ctx.t("errors:experience.cannotKickOwner"),
         });
       }
 
@@ -737,7 +737,7 @@ export const experienceRouter = router({
       if (existingFavorite) {
         throw new TRPCError({
           code: "FORBIDDEN",
-          message: "Experience already favorited",
+          message: ctx.t("errors:experience.alreadyFavorited"),
         });
       }
 

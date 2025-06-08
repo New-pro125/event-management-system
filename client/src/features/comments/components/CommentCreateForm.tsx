@@ -1,8 +1,5 @@
-import { Experience } from "@advanced-react/server/database/schema";
-import { commentValidationSchema } from "@advanced-react/shared/schema/comment";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { useCurrentUser } from "@/features/auth/hooks/useCurrentUser";
+import { Button } from "@/features/shared/components/ui/Button";
 import {
   Form,
   FormControl,
@@ -11,16 +8,21 @@ import {
   FormMessage,
 } from "@/features/shared/components/ui/Form";
 import { TextArea } from "@/features/shared/components/ui/TextArea";
-import { Button } from "@/features/shared/components/ui/Button";
-import { trpc } from "@/router";
 import { useToast } from "@/features/shared/hooks/useToast";
-import { useCurrentUser } from "@/features/auth/hooks/useCurrentUser";
+import { trpc } from "@/router";
+import { Experience } from "@advanced-react/server/database/schema";
+import { commentValidationSchema } from "@advanced-react/shared/schema/comment";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
+import { z } from "zod";
 import { CommentOptimistic } from "../types";
 type CommentCreateFormProps = {
   experience: Experience;
 };
 type CommentCreateFormData = z.infer<typeof commentValidationSchema>;
 export function CommentCreateForm({ experience }: CommentCreateFormProps) {
+  const { t } = useTranslation("comments");
   const { toast } = useToast();
   const utils = trpc.useUtils();
   const { currentUser } = useCurrentUser();
@@ -67,8 +69,8 @@ export function CommentCreateForm({ experience }: CommentCreateFormProps) {
         return { ...oldData, commentsCount: oldData.commentsCount + 1 };
       });
       const { dismiss } = toast({
-        title: "Comment added",
-        description: "Your comment has been added",
+        title: t("toast.added.title"),
+        description: t("toast.added.description"),
       });
 
       return { dismiss, previousData };
@@ -89,7 +91,7 @@ export function CommentCreateForm({ experience }: CommentCreateFormProps) {
         context?.previousData.experienceById,
       );
       toast({
-        title: "Failed to add comment",
+        title: t("toast.addFailed"),
         description: error.message,
         variant: "destructive",
       });
@@ -103,9 +105,7 @@ export function CommentCreateForm({ experience }: CommentCreateFormProps) {
   });
   if (!currentUser) {
     return (
-      <div className="text-center text-neutral-500">
-        Please log in to add comments
-      </div>
+      <div className="text-center text-neutral-500">{t("loginPrompt")}</div>
     );
   }
   return (
@@ -117,14 +117,14 @@ export function CommentCreateForm({ experience }: CommentCreateFormProps) {
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <TextArea {...field} placeholder="Add a comment..." />
+                <TextArea {...field} placeholder={t("placeholder")} />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
         <Button type="submit" disabled={addCommentMutation.isPending}>
-          Add Comment
+          {t("add")}
         </Button>
       </form>
     </Form>

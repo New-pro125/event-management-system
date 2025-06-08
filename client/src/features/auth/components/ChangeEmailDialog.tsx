@@ -22,6 +22,7 @@ import { changeEmailSchema } from "@advanced-react/shared/schema/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import { z } from "zod";
 
 type ChangeEmailformData = z.infer<typeof changeEmailSchema>;
@@ -29,6 +30,7 @@ export function ChangeEmailDialog() {
   const [isOpen, setIsOpen] = useState(false);
   const { toast } = useToast();
   const utils = trpc.useUtils();
+  const { t } = useTranslation("auth");
   const form = useForm<ChangeEmailformData>({
     resolver: zodResolver(changeEmailSchema),
     defaultValues: {
@@ -45,13 +47,13 @@ export function ChangeEmailDialog() {
       form.reset();
       setIsOpen(false);
       toast({
-        title: "Email changed successfully",
-        description: "Your email has been changed",
+        title: t("changeEmail.toast.successTitle"),
+        description: t("changeEmail.toast.successDescription"),
       });
     },
     onError: (err) => {
       toast({
-        title: "Failed to change email",
+        title: t("changeEmail.toast.errorTitle"),
         description: err.message,
         variant: "destructive",
       });
@@ -60,11 +62,11 @@ export function ChangeEmailDialog() {
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button>Update Email</Button>
+        <Button>{t("changeEmail.trigger")}</Button>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className="max-w-[calc(100%-24px)] sm:w-fit">
         <DialogHeader>
-          <DialogTitle>Change Email</DialogTitle>
+          <DialogTitle>{t("changeEmail.title")}</DialogTitle>
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={handleSubmit} className="space-y-4">
@@ -73,7 +75,7 @@ export function ChangeEmailDialog() {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>New Email</FormLabel>
+                  <FormLabel>{t("changeEmail.newEmail")}</FormLabel>
                   <FormControl>
                     <Input
                       type={"email"}
@@ -90,7 +92,7 @@ export function ChangeEmailDialog() {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Current Password</FormLabel>
+                  <FormLabel>{t("changeEmail.currentPassword")}</FormLabel>
                   <FormControl>
                     <Input
                       type={"password"}
@@ -104,7 +106,9 @@ export function ChangeEmailDialog() {
             />
             <DialogFooter>
               <Button type="submit" disabled={changeEmailMutation.isPending}>
-                {changeEmailMutation.isPending ? "Loading..." : "Change Email"}
+                {changeEmailMutation.isPending
+                  ? t("common:actions.loading")
+                  : t("changeEmail.submit")}
               </Button>
             </DialogFooter>
           </form>

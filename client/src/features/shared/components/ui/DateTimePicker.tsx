@@ -6,6 +6,8 @@ import { useState } from "react";
 
 import { cn } from "@/lib/utils/cn";
 
+import { useFormatters } from "@/lib/i18n/useFormatters";
+import { useTranslation } from "react-i18next";
 import { Button } from "./Button";
 import Calendar from "./Calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "./Popover";
@@ -18,7 +20,8 @@ type DateTimePickerProps = {
 
 export function DateTimePicker({ value, onChange }: DateTimePickerProps) {
   const [localValue, setLocalValue] = useState(value);
-
+  const { t } = useTranslation("ui");
+  const { dateFnsLocale } = useFormatters();
   const date = localValue ? new Date(localValue) : new Date();
 
   function handleChange(newDate: Date | undefined) {
@@ -44,23 +47,23 @@ export function DateTimePicker({ value, onChange }: DateTimePickerProps) {
           type="button"
           variant="outline"
           className={cn(
-            "relative w-full bg-neutral-200 pl-3 font-normal dark:bg-neutral-950",
+            "relative w-full bg-neutral-200 ps-3 font-normal dark:bg-neutral-950",
           )}
         >
           {localValue ? (
             <>
-              {format(date, "MM/dd/yyyy hh:mm aa")}
+              {format(date, "PPp", { locale: dateFnsLocale })}
               <X
-                className="absolute right-10 h-6 w-6 rounded-full p-1 hover:bg-neutral-100 dark:hover:bg-neutral-800"
+                className="absolute end-10 h-6 w-6 rounded-full p-1 hover:bg-neutral-100 dark:hover:bg-neutral-800"
                 onClick={handleClear}
               />
             </>
           ) : (
             <span className="text-neutral-500 dark:text-neutral-400">
-              Select a date and time
+              {t("dateTimePicker.placeholder")}
             </span>
           )}
-          <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+          <CalendarIcon className="ms-auto h-4 w-4 opacity-50" />
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0">
@@ -146,7 +149,9 @@ export function DateTimePicker({ value, onChange }: DateTimePickerProps) {
                       handleChange(newDate);
                     }}
                   >
-                    {ampm}
+                    {ampm === "AM"
+                      ? t("dateTimePicker.am")
+                      : t("dateTimePicker.pm")}
                   </Button>
                 ))}
               </div>

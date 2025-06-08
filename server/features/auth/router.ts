@@ -29,8 +29,7 @@ export const authRouter = router({
       if (existingUser) {
         throw new TRPCError({
           code: "CONFLICT",
-          message:
-            "This email is already registered. Please try logging in instead.",
+          message: ctx.t("errors:auth.emailAlreadyRegistered"),
         });
       }
 
@@ -83,7 +82,7 @@ export const authRouter = router({
       if (!user) {
         throw new TRPCError({
           code: "UNAUTHORIZED",
-          message: "Invalid email or password. Please try again.",
+          message: ctx.t("errors:auth.invalidCredentials"),
         });
       }
 
@@ -92,7 +91,7 @@ export const authRouter = router({
       if (!isValid) {
         throw new TRPCError({
           code: "UNAUTHORIZED",
-          message: "Invalid email or password. Please try again.",
+          message: ctx.t("errors:auth.invalidCredentials"),
         });
       }
 
@@ -149,7 +148,7 @@ export const authRouter = router({
       if (!isPasswordValid) {
         throw new TRPCError({
           code: "FORBIDDEN",
-          message: "Invalid password",
+          message: ctx.t("errors:auth.invalidPassword"),
         });
       }
 
@@ -172,7 +171,7 @@ export const authRouter = router({
       if (!isPasswordValid) {
         throw new TRPCError({
           code: "FORBIDDEN",
-          message: "Invalid password",
+          message: ctx.t("errors:auth.invalidPassword"),
         });
       }
 

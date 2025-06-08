@@ -1,10 +1,12 @@
-import { LinkProps } from "@tanstack/react-router";
-import { NotificationForList } from "../types";
-import Link from "@/features/shared/components/ui/Link";
 import Card from "@/features/shared/components/ui/Card";
-import { format } from "date-fns/format";
-import { trpc } from "@/router";
+import Link from "@/features/shared/components/ui/Link";
 import { useToast } from "@/features/shared/hooks/useToast";
+import { useFormatters } from "@/lib/i18n/useFormatters";
+import { trpc } from "@/router";
+import { LinkProps } from "@tanstack/react-router";
+import { format } from "date-fns/format";
+import { useTranslation } from "react-i18next";
+import { NotificationForList } from "../types";
 
 type NotificationCardProps = {
   notification: NotificationForList;
@@ -12,6 +14,8 @@ type NotificationCardProps = {
 export function NotificationCard({ notification }: NotificationCardProps) {
   const utils = trpc.useUtils();
   const { toast } = useToast();
+  const { t } = useTranslation("notifications");
+  const { dateFnsLocale } = useFormatters();
   let linkProps: Pick<LinkProps, "to" | "params"> | undefined;
   if (
     [
@@ -68,7 +72,7 @@ export function NotificationCard({ notification }: NotificationCardProps) {
         context?.previousData.unreadCount,
       );
       toast({
-        title: "Marking notification as read failed",
+        title: t("markReadFailed"),
         description: error.message,
         variant: "destructive",
       });
@@ -88,7 +92,9 @@ export function NotificationCard({ notification }: NotificationCardProps) {
             {notification.content}
           </p>
           <p className="text-sm text-gray-500">
-            {format(new Date(notification.createdAt), "PPp")}
+            {format(new Date(notification.createdAt), "PPp", {
+              locale: dateFnsLocale,
+            })}
           </p>
         </div>
         {!notification.read && (

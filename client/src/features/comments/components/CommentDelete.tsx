@@ -1,4 +1,3 @@
-import { CommentForList, CommentOptimistic } from "../types";
 import { Button } from "@/features/shared/components/ui/Button";
 import {
   Dialog,
@@ -8,9 +7,11 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/features/shared/components/ui/Dialog";
-import { trpc } from "@/router";
 import { useToast } from "@/features/shared/hooks/useToast";
+import { trpc } from "@/router";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
+import { CommentForList, CommentOptimistic } from "../types";
 
 type commentDeleteProps = {
   comment: CommentForList;
@@ -18,6 +19,7 @@ type commentDeleteProps = {
 
 export default function CommentDelete({ comment }: commentDeleteProps) {
   const { toast } = useToast();
+  const { t } = useTranslation("comments");
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState<boolean>(false);
   const utils = trpc.useUtils();
   const deleteMutation = trpc.comments.delete.useMutation({
@@ -54,8 +56,8 @@ export default function CommentDelete({ comment }: commentDeleteProps) {
         };
       });
       const { dismiss } = toast({
-        title: "Comment deleted ",
-        description: "Comment deleted successfully",
+        title: t("toast.deleted.title"),
+        description: t("toast.deleted.description"),
       });
       return { dismiss, previousData };
     },
@@ -70,7 +72,7 @@ export default function CommentDelete({ comment }: commentDeleteProps) {
         context?.previousData.byExperienceId,
       );
       toast({
-        title: "Failed to delete comment",
+        title: t("toast.deleteFailed"),
         description: error.message,
         variant: "destructive",
       });
@@ -84,17 +86,14 @@ export default function CommentDelete({ comment }: commentDeleteProps) {
           variant="destructive-link"
           disabled={(comment as CommentOptimistic).optimistic}
         >
-          Delete
+          {t("common:actions.delete")}
         </Button>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className="max-w-[calc(100%-24px)] sm:w-fit">
         <DialogHeader>
-          <DialogTitle>Delete Comment</DialogTitle>
+          <DialogTitle>{t("delete.title")}</DialogTitle>
         </DialogHeader>
-        <p>
-          Are you sure you want to delete this comment? This action cannot be
-          undone.
-        </p>
+        <p>{t("delete.confirm")}</p>
         <DialogFooter>
           <Button
             variant={"outline"}
@@ -102,7 +101,7 @@ export default function CommentDelete({ comment }: commentDeleteProps) {
               setIsDeleteDialogOpen(false);
             }}
           >
-            Cancel
+            {t("common:actions.cancel")}
           </Button>
           <Button
             variant="destructive"
@@ -113,7 +112,9 @@ export default function CommentDelete({ comment }: commentDeleteProps) {
             }}
             disabled={deleteMutation.isPending}
           >
-            {deleteMutation.isPending ? "Deleting..." : "Delete"}
+            {deleteMutation.isPending
+              ? t("common:actions.deleting")
+              : t("common:actions.delete")}
           </Button>
         </DialogFooter>
       </DialogContent>

@@ -1,0 +1,31 @@
+{
+  "section": {
+    "title": "Comments ({{total}})"
+  },
+  "empty": "No comments yet",
+  "loginPrompt": "Please log in to add comments",
+  "placeholder": "Add a comment...",
+  "add": "Add Comment",
+  "delete": {
+    "title": "Delete Comment",
+    "confirm": "Are you sure you want to delete this comment? This action cannot be undone."
+  },
+  "toast": {
+    "added": {
+      "title": "Comment added",
+      "description": "Your comment has been added"
+    },
+    "addFailed": "Failed to add comment",
+    "updated": {
+      "title": "Comment updated",
+      "description": "Your comment has been updated"
+    },
+    "editFailed": "Failed to edit comment",
+    "deleted": {
+      "title": "Comment deleted",
+      "description": "Comment deleted successfully"
+    },
+    "deleteFailed": "Failed to delete comment",
+    "likeFailed": "Like Comment failed"
+  }
+}

@@ -1,7 +1,4 @@
 import { Button } from "@/features/shared/components/ui/Button";
-import { User } from "@advanced-react/server/database/schema";
-import { userEditSchema } from "@advanced-react/shared/schema/auth";
-import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Dialog,
   DialogContent,
@@ -10,8 +7,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/features/shared/components/ui/Dialog";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
+import FileInput from "@/features/shared/components/ui/FileInput";
 import {
   Form,
   FormControl,
@@ -21,10 +17,15 @@ import {
   FormMessage,
 } from "@/features/shared/components/ui/Form";
 import Input from "@/features/shared/components/ui/Input";
-import { useState } from "react";
-import { trpc } from "@/router";
 import { useToast } from "@/features/shared/hooks/useToast";
-import FileInput from "@/features/shared/components/ui/FileInput";
+import { trpc } from "@/router";
+import { User } from "@advanced-react/server/database/schema";
+import { userEditSchema } from "@advanced-react/shared/schema/auth";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
+import { z } from "zod";
 
 type UserFormData = z.infer<typeof userEditSchema>;
 type UserEditDialogProps = {
@@ -41,6 +42,7 @@ export function UserEditDialog({ user }: UserEditDialogProps) {
     },
   });
   const { toast } = useToast();
+  const { t } = useTranslation("users");
   const utils = trpc.useUtils();
   const editUserMutation = trpc.users.edit.useMutation({
     onSuccess: async ({ id }) => {
@@ -51,13 +53,13 @@ export function UserEditDialog({ user }: UserEditDialogProps) {
       form.reset();
       setIsOpen(false);
       toast({
-        title: "Profile edited successfully",
-        description: "Profile have been edited successfully",
+        title: t("edit.toast.successTitle"),
+        description: t("edit.toast.successDescription"),
       });
     },
     onError: (error) => {
       toast({
-        title: "Profile edit failed",
+        title: t("edit.toast.errorTitle"),
         description: error.message,
         variant: "destructive",
       });
@@ -75,11 +77,11 @@ export function UserEditDialog({ user }: UserEditDialogProps) {
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button>Edit Profile</Button>
+        <Button>{t("edit.trigger")}</Button>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className="max-w-[calc(100%-24px)] sm:w-fit">
         <DialogHeader>
-          <DialogTitle>Edit Profile</DialogTitle>
+          <DialogTitle>{t("edit.title")}</DialogTitle>
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={handleSubmit} className="space-y-4">
@@ -88,7 +90,7 @@ export function UserEditDialog({ user }: UserEditDialogProps) {
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Name</FormLabel>
+                  <FormLabel>{t("edit.name")}</FormLabel>
                   <FormControl>
                     <Input {...field} />
                   </FormControl>
@@ -101,7 +103,7 @@ export function UserEditDialog({ user }: UserEditDialogProps) {
               name="bio"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Bio</FormLabel>
+                  <FormLabel>{t("edit.bio")}</FormLabel>
                   <FormControl>
                     <Input {...field} />
                   </FormControl>
@@ -114,7 +116,7 @@ export function UserEditDialog({ user }: UserEditDialogProps) {
               name="photo"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Image</FormLabel>
+                  <FormLabel>{t("edit.image")}</FormLabel>
                   <FormControl>
                     <FileInput
                       accept="image/*"
@@ -129,7 +131,9 @@ export function UserEditDialog({ user }: UserEditDialogProps) {
             />
             <DialogFooter>
               <Button type="submit" disabled={editUserMutation.isPending}>
-                {editUserMutation.isPending ? "Saving..." : "Save"}
+                {editUserMutation.isPending
+                  ? t("common:actions.saving")
+                  : t("common:actions.save")}
               </Button>
             </DialogFooter>
           </form>

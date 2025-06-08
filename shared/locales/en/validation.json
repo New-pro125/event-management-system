@@ -1,0 +1,21 @@
+{
+  "required": "Required",
+  "name": {
+    "min": "Name must be at least {{nameMin}} characters long"
+  },
+  "email": {
+    "invalid": "Please enter a valid email address"
+  },
+  "password": {
+    "min": "Password must be at least {{passwordMin}} characters long"
+  },
+  "commaent": {
+    "required": "Comment is required"
+  },
+  "experience": {
+    "titleRequired": "Title is required",
+    "contentRequired": "Content is required",
+    "invalidDate": "Invalid date",
+    "invalidLink": "Invalid link"
+  }
+}

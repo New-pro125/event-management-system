@@ -51,7 +51,7 @@ export const userRouter = router({
       if (!user) {
         throw new TRPCError({
           code: "NOT_FOUND",
-          message: "User not found",
+          message: ctx.t("errors:user.notFound"),
         });
       }
 
@@ -82,7 +82,7 @@ export const userRouter = router({
       if (ctx.user.id === input.id) {
         throw new TRPCError({
           code: "FORBIDDEN",
-          message: "You cannot follow yourself",
+          message: ctx.t("errors:user.cannotFollowSelf"),
         });
       }
 
@@ -96,7 +96,7 @@ export const userRouter = router({
       if (existingFollow) {
         throw new TRPCError({
           code: "FORBIDDEN",
-          message: "You are already following this user",
+          message: ctx.t("errors:user.alreadyFollowing"),
         });
       }
 
@@ -122,7 +122,7 @@ export const userRouter = router({
       if (ctx.user.id === input.id) {
         throw new TRPCError({
           code: "FORBIDDEN",
-          message: "You cannot unfollow yourself",
+          message: ctx.t("errors:user.cannotUnfollowSelf"),
         });
       }
 
@@ -136,7 +136,7 @@ export const userRouter = router({
       if (!existingFollow) {
         throw new TRPCError({
           code: "FORBIDDEN",
-          message: "You are not following this user",
+          message: ctx.t("errors:user.notFollowing"),
         });
       }
 
@@ -182,7 +182,10 @@ export const userRouter = router({
       });
 
       if (!user) {
-        throw new TRPCError({ code: "NOT_FOUND", message: "User not found" });
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: ctx.t("errors:user.notFound"),
+        });
       }
 
       const followers = await getUserFollowers(input.id, limit + 1, cursor);
@@ -243,7 +246,10 @@ export const userRouter = router({
       });
 
       if (!user) {
-        throw new TRPCError({ code: "NOT_FOUND", message: "User not found" });
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: ctx.t("errors:user.notFound"),
+        });
       }
 
       const following = await getUserFollowing(input.id, limit + 1, cursor);
@@ -280,7 +286,7 @@ export const userRouter = router({
       if (ctx.user.id !== input.id) {
         throw new TRPCError({
           code: "FORBIDDEN",
-          message: "You can only update your own profile",
+          message: ctx.t("errors:user.editForbidden"),
         });
       }
 
@@ -335,7 +341,7 @@ export const userRouter = router({
       if (!experience) {
         throw new TRPCError({
           code: "NOT_FOUND",
-          message: "Experience not found",
+          message: ctx.t("errors:experience.notFound"),
         });
       }
 

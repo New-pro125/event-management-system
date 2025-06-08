@@ -1,6 +1,7 @@
 import { X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
+import { useTranslation } from "react-i18next";
 import Input from "./Input";
 
 export type FileInputProps = React.InputHTMLAttributes<HTMLInputElement>;
@@ -8,6 +9,7 @@ export type FileInputProps = React.InputHTMLAttributes<HTMLInputElement>;
 export default function FileInput({ onChange, ...props }: FileInputProps) {
   const [preview, setPreview] = useState<string>();
   const inputRef = useRef<HTMLInputElement>(null);
+  const { t } = useTranslation("ui");
 
   useEffect(() => {
     return () => {
@@ -58,13 +60,13 @@ export default function FileInput({ onChange, ...props }: FileInputProps) {
           <button
             type="button"
             onClick={handleClear}
-            className="absolute -right-2 -top-2 rounded-full bg-neutral-900 p-1 text-white hover:bg-neutral-700 dark:bg-white dark:text-neutral-900 dark:hover:bg-neutral-200"
+            className="absolute -end-2 -top-2 rounded-full bg-neutral-900 p-1 text-white hover:bg-neutral-700 dark:bg-white dark:text-neutral-900 dark:hover:bg-neutral-200"
           >
             <X className="h-3 w-3" />
           </button>
           <img
             src={preview}
-            alt="Preview"
+            alt={t("fileinput.previewAlt")}
             className="h-48 w-48 rounded-lg object-cover"
           />
         </div>

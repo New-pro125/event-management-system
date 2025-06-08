@@ -1,0 +1,37 @@
+{
+  "nav": {
+    "home": "الرئيسية",
+    "search": "بحث",
+    "notifications": "الإشعارات",
+    "favorites": "المفضلة",
+    "settings": "الإعدادات",
+    "profile": "الملف الشخصي",
+    "createExperience": "إنشاء فعالية",
+    "login": "تسجيل الدخول"
+  },
+  "theme": {
+    "light": "الوضع الفاتح",
+    "dark": "الوضع الداكن"
+  },
+  "language": {
+    "label": "اللغة"
+  },
+  "actions": {
+    "edit": "تعديل",
+    "cancel": "إلغاء",
+    "save": "حفظ",
+    "saving": "جارٍ الحفظ...",
+    "delete": "حذف",
+    "deleting": "جارٍ الحذف...",
+    "loading": "جارٍ التحميل..."
+  },
+  "errors": {
+    "generic": "حدث خطأ ما",
+    "tryAgain": "حاول مرة أخرى",
+    "notFound": "الصفحة التي تبحث عنها غير موجودة."
+  },
+  "location": {
+    "searchPlaceholder": "ابحث عن موقع...",
+    "clear": "مسح الموقع"
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "edit": {
+    "trigger": "Edit Profile",
+    "title": "Edit Profile",
+    "name": "Name",
+    "bio": "Bio",
+    "image": "Image",
+    "toast": {
+      "successTitle": "Profile edited successfully",
+      "successDescription": "Profile have been edited successfully",
+      "errorTitle": "Profile edit failed"
+    }
+  },
+  "follow": {
+    "follow": "Follow",
+    "unfollow": "Unfollow",
+    "failed": "Failed to follow user",
+    "unfollowFailed": "Failed to unfollow user"
+  },
+  "list": {
+    "empty": "No users found"
+  },
+  "profile": {
+    "experiences": "Experiences",
+    "hostStats": "Host Stats",
+    "followers": "Followers",
+    "following": "Following",
+    "followersHeading": "Followers ({{total}})",
+    "followingHeading": "Following ({{total}})"
+  }
+}

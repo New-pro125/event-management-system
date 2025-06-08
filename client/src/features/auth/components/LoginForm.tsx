@@ -16,6 +16,7 @@ import { userCredentialsSchema } from "@advanced-react/shared/schema/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "@tanstack/react-router";
 import { useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import { z } from "zod";
 
 const loginCredentialSchema = userCredentialsSchema.omit({
@@ -27,6 +28,7 @@ export function LoginForm() {
   const { toast } = useToast();
   const utils = trpc.useUtils();
   const router = useRouter();
+  const { t } = useTranslation("auth");
   const form = useForm<LoginFormData>({
     resolver: zodResolver(loginCredentialSchema),
     defaultValues: {
@@ -39,13 +41,13 @@ export function LoginForm() {
       await utils.auth.currentUser.invalidate();
       router.navigate({ to: "/" });
       toast({
-        title: "Logged in",
-        description: "You have been logged in",
+        title: t("login.toast.successTitle"),
+        description: t("login.toast.successDescription"),
       });
     },
     onError: (error) => {
       toast({
-        title: "Failed to Login",
+        title: t("login.toast.errorTitle"),
         description: error.message,
         variant: "destructive",
       });
@@ -63,7 +65,7 @@ export function LoginForm() {
             name="email"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Email</FormLabel>
+                <FormLabel>{t("fields.email")}</FormLabel>
                 <FormControl>
                   <Input
                     {...field}
@@ -80,7 +82,7 @@ export function LoginForm() {
             name="password"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Password</FormLabel>
+                <FormLabel>{t("fields.password")}</FormLabel>
                 <FormControl>
                   <Input {...field} type="password" placeholder="*********" />
                 </FormControl>
@@ -90,13 +92,15 @@ export function LoginForm() {
           />
           <Button
             type="submit"
-            className="w-full"
+            className="my-2 w-full"
             disabled={loginMutation.isPending}
           >
-            {loginMutation.isPending ? "Logging in..." : "Login"}
+            {loginMutation.isPending
+              ? t("login.submitting")
+              : t("login.submit")}
           </Button>
           <Link to="/register" variant="ghost" className="justify-center py-1">
-            Don't have an account? Register
+            {t("login.noAccount")}
           </Link>
         </form>
       </Card>

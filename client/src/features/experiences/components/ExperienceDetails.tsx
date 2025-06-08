@@ -1,17 +1,19 @@
-import { LinkIcon } from "lucide-react";
-import { ExperienceForDetails } from "../types";
-import { Button } from "@/features/shared/components/ui/Button";
-import Link from "@/features/shared/components/ui/Link";
 import { useCurrentUser } from "@/features/auth/hooks/useCurrentUser";
-import Card from "@/features/shared/components/ui/Card";
-import { ExperienceDeleteDialog } from "./ExperienceDeleteDialog";
-import { router } from "@/router";
-import { ExperienceAttendButton } from "./ExperienceAttendButton";
-import { UserAvatarList } from "@/features/users/components/UserAvatarList";
-import { ExperienceFavoriteButton } from "./ExperienceFavoriteButton";
-import { TagList } from "@/features/tags/components/TagList";
-import { LocationData } from "@advanced-react/shared/schema/experience";
 import { LocationDisplay } from "@/features/shared/components/LocationDisplay";
+import { Button } from "@/features/shared/components/ui/Button";
+import Card from "@/features/shared/components/ui/Card";
+import Link from "@/features/shared/components/ui/Link";
+import { TagList } from "@/features/tags/components/TagList";
+import { UserAvatarList } from "@/features/users/components/UserAvatarList";
+import { useFormatters } from "@/lib/i18n/useFormatters";
+import { router } from "@/router";
+import { LocationData } from "@advanced-react/shared/schema/experience";
+import { LinkIcon } from "lucide-react";
+import { useTranslation } from "react-i18next";
+import { ExperienceForDetails } from "../types";
+import { ExperienceAttendButton } from "./ExperienceAttendButton";
+import { ExperienceDeleteDialog } from "./ExperienceDeleteDialog";
+import { ExperienceFavoriteButton } from "./ExperienceFavoriteButton";
 
 type ExperienceDetailsProps = {
   experience: ExperienceForDetails;
@@ -47,6 +49,7 @@ function ExperienceDetailsMedia({ experience }: ExperienceDetailsMediaProps) {
         src={experience.imageUrl}
         alt={experience.title}
         className="h-full w-full object-cover"
+        loading="lazy"
       />
     </div>
   );
@@ -70,9 +73,11 @@ function ExperienceDetailsContent({
 type ExperienceDetailsMetaProps = Pick<ExperienceDetailsProps, "experience">;
 
 function ExperienceDetailsMeta({ experience }: ExperienceDetailsMetaProps) {
+  const { t } = useTranslation("experiences");
+  const { formatDateTime } = useFormatters();
   return (
     <div className="flex items-center gap-4 text-neutral-600 dark:text-neutral-400">
-      <time>{new Date(experience.scheduledAt).toLocaleString()}</time>
+      <time>{formatDateTime(experience.scheduledAt)}</time>
       {experience.url && (
         <div className="flex items-center gap-2">
           <LinkIcon
@@ -84,7 +89,7 @@ function ExperienceDetailsMeta({ experience }: ExperienceDetailsMetaProps) {
             target="_blank"
             className="text-secondary-500 dark:text-primary-500 hover:underline"
           >
-            Event Details
+            {t("card.eventDetails")}
           </a>
         </div>
       )}
@@ -98,6 +103,7 @@ type ExperienceDetailsOwnerButtonsProps = Pick<
 function ExperienceDetailsOwnerButtons({
   experience,
 }: ExperienceDetailsOwnerButtonsProps) {
+  const { t } = useTranslation("common");
   return (
     <div className="flex gap-4">
       <Button asChild variant="link">
@@ -105,7 +111,7 @@ function ExperienceDetailsOwnerButtons({
           to="/experiences/$experienceId/edit"
           params={{ experienceId: experience.id }}
         >
-          Edit
+          {t("actions.edit")}
         </Link>
       </Button>
       <ExperienceDeleteDialog
@@ -151,10 +157,11 @@ type ExperienceDetailsAttendeesProps = Pick<
 function ExperienceDetailAttendees({
   experience,
 }: ExperienceDetailsAttendeesProps) {
+  const { t } = useTranslation("experiences");
   return (
     <div className="space-y-4">
       <div className="space-y-2">
-        <h3 className="font-medium">Host</h3>
+        <h3 className="font-medium">{t("details.host")}</h3>
         <UserAvatarList users={[experience.user]} totalCount={1} />
       </div>
       <div className="space-y-2">
@@ -164,7 +171,7 @@ function ExperienceDetailAttendees({
           variant="secondary"
         >
           <h3 className="font-medium">
-            Attendees ({experience.attendeesCount})
+            {t("details.attendees", { total: experience.attendeesCount })}
           </h3>
         </Link>
         {experience.attendeesCount > 0 ? (
@@ -174,7 +181,7 @@ function ExperienceDetailAttendees({
           />
         ) : (
           <p className="text-neutral-600 dark:text-neutral-400">
-            Be the first to attend!
+            {t("details.beFirst")}
           </p>
         )}
       </div>

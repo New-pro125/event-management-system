@@ -1,0 +1,36 @@
+{
+  "notAuthenticated": "غير مسجّل الدخول",
+  "auth": {
+    "emailAlreadyRegistered": "هذا البريد الإلكتروني مسجّل بالفعل. يرجى تسجيل الدخول بدلاً من ذلك.",
+    "invalidCredentials": "البريد الإلكتروني أو كلمة المرور غير صحيحة. يرجى المحاولة مرة أخرى.",
+    "invalidPassword": "كلمة المرور غير صحيحة"
+  },
+  "comment": {
+    "notFound": "التعليق غير موجود",
+    "editForbidden": "يمكنك تعديل تعليقاتك فقط",
+    "deleteForbidden": "يمكنك حذف تعليقاتك فقط",
+    "alreadyLiked": "لقد أعجبك هذا التعليق بالفعل"
+  },
+  "experience": {
+    "notFound": "الفعالية غير موجودة",
+    "idRequired": "معرّف الفعالية مطلوب",
+    "editForbidden": "يمكنك تعديل فعالياتك فقط",
+    "deleteForbidden": "يمكنك حذف فعالياتك فقط",
+    "alreadyAttending": "أنت مشارك بالفعل في هذه الفعالية",
+    "notAttending": "أنت لست مشاركًا في هذه الفعالية",
+    "kickOwnerOnly": "لا يمكن إزالة المشاركين إلا من قبل صاحب الفعالية",
+    "cannotKickOwner": "لا يمكن إزالة صاحب الفعالية",
+    "alreadyFavorited": "الفعالية مضافة إلى المفضلة بالفعل"
+  },
+  "user": {
+    "notFound": "المستخدم غير موجود",
+    "cannotFollowSelf": "لا يمكنك متابعة نفسك",
+    "alreadyFollowing": "أنت تتابع هذا المستخدم بالفعل",
+    "cannotUnfollowSelf": "لا يمكنك إلغاء متابعة نفسك",
+    "notFollowing": "أنت لا تتابع هذا المستخدم",
+    "editForbidden": "يمكنك تحديث ملفك الشخصي فقط"
+  },
+  "tag": {
+    "notFound": "الوسم غير موجود"
+  }
+}

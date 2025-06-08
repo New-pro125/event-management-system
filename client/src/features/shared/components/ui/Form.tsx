@@ -11,6 +11,8 @@ import {
 
 import { cn } from "@/lib/utils/cn";
 
+import { translateValidationMessage } from "@advanced-react/shared/i18n";
+import { useTranslation } from "react-i18next";
 import { Label } from "./Label";
 
 const Form = FormProvider;
@@ -140,8 +142,11 @@ function FormMessage({
   className,
   ...props
 }: React.HTMLAttributes<HTMLParagraphElement>) {
+  const { t } = useTranslation("common");
   const { error, formMessageId } = useFormField();
-  const body = error ? String(error?.message) : props.children;
+  const body = error
+    ? translateValidationMessage((key) => String(t(key)), String(error.message))
+    : props.children;
 
   if (!body) {
     return null;
@@ -159,12 +164,12 @@ function FormMessage({
 }
 
 export {
-  useFormField,
   Form,
-  FormItem,
-  FormLabel,
   FormControl,
   FormDescription,
-  FormMessage,
   FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+  useFormField,
 };

@@ -1,0 +1,21 @@
+{
+  "page": {
+    "heading": "Experiences with \"{{tag}}\""
+  },
+  "names": {
+    "hiking": "Hiking",
+    "running": "Running",
+    "biking": "Biking",
+    "swimming": "Swimming",
+    "yoga": "Yoga",
+    "dinner": "Dinner",
+    "movie": "Movie",
+    "concert": "Concert",
+    "party": "Party",
+    "gameNight": "Game Night",
+    "bookClub": "Book Club",
+    "artClass": "Art Class",
+    "cookingClass": "Cooking Class",
+    "wineTasting": "Wine Tasting"
+  }
+}

@@ -1,5 +1,6 @@
-import { CommentCard } from "./CommentCard";
+import { useTranslation } from "react-i18next";
 import { CommentForList } from "../types";
+import { CommentCard } from "./CommentCard";
 
 type commentListProps = {
   comments: CommentForList[];
@@ -7,8 +8,9 @@ type commentListProps = {
 };
 export default function CommentList({
   comments,
-  noCommentMessage = "No comments yet",
+  noCommentMessage,
 }: commentListProps) {
+  const { t } = useTranslation("comments");
   return (
     <div className="space-y-4">
       {comments.map((comment) => (
@@ -16,7 +18,9 @@ export default function CommentList({
       ))}
 
       {comments.length === 0 && (
-        <div className="flex justify-center">{noCommentMessage}</div>
+        <div className="flex justify-center">
+          {noCommentMessage ?? t("empty")}
+        </div>
       )}
     </div>
   );

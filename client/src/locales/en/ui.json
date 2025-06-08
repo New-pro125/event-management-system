@@ -1,0 +1,20 @@
+{
+  "dialog": {
+    "close": "Close"
+  },
+  "multiSelect": {
+    "placeholder": "Select Options",
+    "selectAll": "(Select All)",
+    "more": "+ {{total}} more",
+    "clear": "Clear",
+    "close": "Close"
+  },
+  "fileInput": {
+    "previewAlt": "Preview"
+  },
+  "dateTimePicker": {
+    "placeholder": "Select a date and time",
+    "am": "AM",
+    "pm": "PM"
+  }
+}

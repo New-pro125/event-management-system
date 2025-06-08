@@ -95,7 +95,7 @@ export const commentRouter = router({
       if (!experience) {
         throw new TRPCError({
           code: "NOT_FOUND",
-          message: "Experience not found",
+          message: ctx.t("errors:comment.notFound"),
         });
       }
 
@@ -135,18 +135,17 @@ export const commentRouter = router({
       const comment = await db.query.commentsTable.findFirst({
         where: eq(commentsTable.id, input.id),
       });
-      const userId = 1;
       if (!comment) {
         throw new TRPCError({
           code: "NOT_FOUND",
-          message: "Comment not found",
+          message: ctx.t("errors:comment.notFound"),
         });
       }
 
       if (comment.userId !== ctx.user.id) {
         throw new TRPCError({
           code: "FORBIDDEN",
-          message: "You can only edit your own comments",
+          message: ctx.t("errors:comment.editForbidden"),
         });
       }
 
@@ -167,7 +166,6 @@ export const commentRouter = router({
   delete: protectedProcedure
     .input(z.object({ id: commentSelectSchema.shape.id }))
     .mutation(async ({ ctx, input }) => {
-      const userId = 1;
       const comment = await db.query.commentsTable.findFirst({
         where: eq(commentsTable.id, input.id),
       });
@@ -175,7 +173,7 @@ export const commentRouter = router({
       if (!comment) {
         throw new TRPCError({
           code: "NOT_FOUND",
-          message: "Comment not found",
+          message: ctx.t("errors:comment.notFound"),
         });
       }
 
@@ -189,7 +187,7 @@ export const commentRouter = router({
       ) {
         throw new TRPCError({
           code: "FORBIDDEN",
-          message: "You can only delete your own comments",
+          message: ctx.t("errors:comment.deleteForbidden"),
         });
       }
 
@@ -211,7 +209,7 @@ export const commentRouter = router({
       if (existingLike) {
         throw new TRPCError({
           code: "FORBIDDEN",
-          message: "You have already liked this comment",
+          message: ctx.t("errors:comment.alreadyLiked"),
         });
       }
 

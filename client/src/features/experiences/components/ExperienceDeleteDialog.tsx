@@ -9,6 +9,7 @@ import {
 import { Experience } from "@advanced-react/server/database/schema";
 import { DialogTrigger } from "@radix-ui/react-dialog";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useExperienceMutation } from "../hooks/useExperienceMutation";
 
 type ExperienceDeleteDialogProps = {
@@ -20,6 +21,7 @@ export function ExperienceDeleteDialog({
   experience,
   onSuccess,
 }: ExperienceDeleteDialogProps) {
+  const { t } = useTranslation("experiences");
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const { deleteMutation } = useExperienceMutation({
@@ -33,20 +35,18 @@ export function ExperienceDeleteDialog({
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button variant="destructive-link">Delete</Button>
+        <Button variant="destructive-link">{t("common:actions.delete")}</Button>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className="max-w-[calc(100%-24px)] sm:w-fit">
         <DialogHeader>
-          <DialogTitle>Delete Experience</DialogTitle>
+          <DialogTitle>{t("delete.title")}</DialogTitle>
         </DialogHeader>
         <p className="text-neutral-600 dark:text-neutral-400">
-          {" "}
-          Are you sure you want to delete this experience ? This action cannot
-          be undone.
+          {t("delete.confirm")}
         </p>
         <DialogFooter>
           <Button variant={"outline"} onClick={() => setIsOpen(false)}>
-            Cancel
+            t("common:actions.cancel")
           </Button>
           <Button
             variant="destructive"
@@ -55,7 +55,9 @@ export function ExperienceDeleteDialog({
             }}
             disabled={deleteMutation.isPending}
           >
-            {deleteMutation.isPending ? "Deleting..." : "Delete"}
+            {deleteMutation.isPending
+              ? t("common:actions.deleting")
+              : t("common:actions.delete")}
           </Button>
         </DialogFooter>
       </DialogContent>

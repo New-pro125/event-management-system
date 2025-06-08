@@ -1,11 +1,12 @@
 import { LocationData } from "@advanced-react/shared/schema/experience";
 import { LatLngTuple } from "leaflet";
 import { useEffect, useState } from "react";
-import { RawInput } from "./ui/Input";
+import { useTranslation } from "react-i18next";
 import { useDebounce } from "../hooks/useDebounce";
-import { Button } from "./ui/Button";
-import { ScrollArea, ScrollBar } from "./ui/ScrollArea";
 import { LocationDisplay } from "./LocationDisplay";
+import { Button } from "./ui/Button";
+import { RawInput } from "./ui/Input";
+import { ScrollArea, ScrollBar } from "./ui/ScrollArea";
 
 const DEFAULT_LOCATION = {
   lat: 30.033333,
@@ -83,6 +84,7 @@ type LocationSearchProps = {
 
 function LocationSearch({ onSearch }: LocationSearchProps) {
   const [search, setSearch] = useState("");
+  const { t } = useTranslation("common");
   const debouncedSearch = useDebounce(search, 500);
   useEffect(() => {
     if (debouncedSearch) {
@@ -91,7 +93,7 @@ function LocationSearch({ onSearch }: LocationSearchProps) {
   }, [debouncedSearch, onSearch]);
   return (
     <RawInput
-      placeholder="Search location..."
+      placeholder={t("location.searchPlaceholder")}
       value={search}
       onChange={(e) => setSearch(e.target.value)}
     />
@@ -103,11 +105,12 @@ type SelectedLocationProps = {
 };
 
 function SelectedLocation({ displayName, onClear }: SelectedLocationProps) {
+  const { t } = useTranslation("common");
   return (
     <div className="mb-4 space-y-2 rounded border border-neutral-100 p-2 dark:border-neutral-800">
       <div className="mb-2">{displayName}</div>
       <Button type="button" variant={"destructive-link"} onClick={onClear}>
-        Clear Location
+        {t("location.clear")}
       </Button>
     </div>
   );
@@ -120,7 +123,7 @@ type VenueListProps = {
 function VenueList({ venues, onSelect }: VenueListProps) {
   return (
     <ScrollArea className="h-[160px]">
-      <div className="space-y-2 pr-4">
+      <div className="space-y-2 pe-4">
         {venues.map((venue, index) => (
           <div
             key={index}

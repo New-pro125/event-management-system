@@ -4,6 +4,7 @@ import { trpc } from "@/router";
 import { Comment } from "@advanced-react/server/database/schema";
 import { useParams } from "@tanstack/react-router";
 import { Heart } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 type CommentLikeButtonProps = {
   commentId: Comment["id"];
@@ -19,6 +20,7 @@ export function CommentLikeButton({
   disabled,
 }: CommentLikeButtonProps) {
   const utils = trpc.useUtils();
+  const { t } = useTranslation("comments");
   const { toast } = useToast();
   const { experienceId } = useParams({ strict: false });
   const likeMutation = trpc.comments.like.useMutation({
@@ -55,7 +57,7 @@ export function CommentLikeButton({
         context?.previousData.byExperienceId,
       );
       toast({
-        title: "Like Comment failed",
+        title: t("likeFailed"),
         description: error.message,
         variant: "destructive",
       });
@@ -112,7 +114,7 @@ export function CommentLikeButton({
       disabled={likeMutation.isPending || unlikeMutation.isPending || disabled}
     >
       <Heart
-        className={`h-4 w-4 ${isLiked ? "fill-red-500 text-red-500" : ""}`}
+        className={`h-4 w-4 ${isLiked ? "fill-red-500 text-red-500" : "text-secondary-500 dark:text-primary-500"}`}
       />
       {likesCount}
     </Button>

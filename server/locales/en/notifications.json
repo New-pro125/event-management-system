@@ -1,0 +1,8 @@
+{
+  "user_attending_experience": "{{name}} is attending your experience",
+  "user_unattending_experience": "{{name}} is no longer attending your experience",
+  "user_commend_experience": "{{name}} commented on your eperience",
+  "user_followed_user": "{{name}} followed you",
+  "user_kicked_experience": "{{name}} kicked you from the experience",
+  "default": "New notification"
+}

@@ -1,0 +1,21 @@
+{
+  "page": {
+    "heading": "فعاليات بوسم \"{{tag}}\""
+  },
+  "names": {
+    "hiking": "المشي لمسافات طويلة",
+    "running": "الجري",
+    "biking": "ركوب الدراجات",
+    "swimming": "السباحة",
+    "yoga": "اليوغا",
+    "dinner": "عشاء",
+    "movie": "فيلم",
+    "concert": "حفل موسيقي",
+    "party": "حفلة",
+    "gameNight": "ليلة ألعاب",
+    "bookClub": "نادي الكتاب",
+    "artClass": "حصة فنية",
+    "cookingClass": "حصة طبخ",
+    "wineTasting": "تذوق النبيذ"
+  }
+}

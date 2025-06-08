@@ -1,4 +1,5 @@
 import Spinner from "@/features/shared/components/ui/Spinner";
+import { useTranslation } from "react-i18next";
 import { NotificationForList } from "../types";
 import { NotificationCard } from "./NotificationCard";
 
@@ -10,6 +11,7 @@ export function NotificationList({
   notifications,
   isLoading,
 }: NotificationListProps) {
+  const { t } = useTranslation("notifications");
   return (
     <div className="flex flex-col gap-4">
       {notifications.map((notification) => (
@@ -21,7 +23,7 @@ export function NotificationList({
         </div>
       )}
       {!isLoading && notifications.length == 0 && (
-        <div className="flex justify-center py-4">No notifications yet</div>
+        <div className="flex justify-center py-4">{t("empty")}</div>
       )}
     </div>
   );

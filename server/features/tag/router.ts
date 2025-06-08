@@ -16,13 +16,16 @@ export const tagRouter = router({
   byId: publicProcedure
     .input(z.object({ id: z.number() }))
     .output(tagSelectSchema)
-    .query(async ({ input }) => {
+    .query(async ({ input, ctx }) => {
       const tag = await db.query.tagsTable.findFirst({
         where: eq(tagsTable.id, input.id),
       });
 
       if (!tag) {
-        throw new TRPCError({ code: "NOT_FOUND", message: "Tag not found" });
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: ctx.t("errors:tag.notFound"),
+        });
       }
 
       return tag;

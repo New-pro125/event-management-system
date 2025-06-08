@@ -1,11 +1,12 @@
 import { Moon, Sun } from "lucide-react";
 
+import { useTranslation } from "react-i18next";
 import { useTheme } from "./ThemeProvider";
 import { Button } from "./ui/Button";
 
 export function ThemeToggle() {
   const { theme, setTheme } = useTheme();
-
+  const { t } = useTranslation("common");
   return (
     <Button
       variant="ghost"
@@ -15,12 +16,12 @@ export function ThemeToggle() {
       {theme === "dark" ? (
         <>
           <Sun className="h-6 w-6" />
-          Light Mode
+          {t("theme.light")}
         </>
       ) : (
         <>
           <Moon className="h-6 w-6" />
-          Dark Mode
+          {t("theme.dark")}
         </>
       )}
     </Button>

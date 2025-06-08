@@ -11,10 +11,12 @@ export type LocationData = z.infer<typeof locationSchema>;
 
 export const experienceValidationSchema = zfd.formData({
   id: zfd.numeric(z.number()).optional(),
-  title: zfd.text(z.string().min(1, "Title is required")),
-  content: zfd.text(z.string().min(1, "Content is required")),
-  scheduledAt: zfd.text(z.string().datetime("Invalid date")),
-  url: zfd.text(z.string().url("Invalid link")).nullable(),
+  title: zfd.text(z.string().min(1, "validation:experience.titleRequired")),
+  content: zfd.text(z.string().min(1, "validation:experience.contentRequired")),
+  scheduledAt: zfd.text(
+    z.string().datetime("validation:experience.invalidDate"),
+  ),
+  url: zfd.text(z.string().url("validation:experience.invalidLink")).nullable(),
   image: zfd.file().optional(),
   location: zfd.json(locationSchema),
 });

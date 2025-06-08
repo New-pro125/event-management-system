@@ -1,3 +1,7 @@
+import {
+  resolveLanguage,
+  translateValidationMessage,
+} from "@advanced-react/shared/i18n";
 import { initTRPC, TRPCError } from "@trpc/server";
 import * as trpcExpress from "@trpc/server/adapters/express";
 import { eq } from "drizzle-orm";
@@ -6,6 +10,7 @@ import { ZodError } from "zod";
 import { db } from "./database";
 import { auth } from "./features/auth";
 import { CurrentUser, usersTable } from "./features/auth/models";
+import i18next from "./i18n";
 
 // Context available to all procedures
 type Context = Awaited<ReturnType<typeof createContext>>;
@@ -14,11 +19,17 @@ type Context = Awaited<ReturnType<typeof createContext>>;
 export async function createContext(
   opts: trpcExpress.CreateExpressContextOptions,
 ) {
+  const { language: detectedLanguage } = opts.req as unknown as {
+    language?: string;
+  };
+  const language = resolveLanguage(detectedLanguage);
   const context = {
     req: opts.req,
     res: opts.res,
     user: null as CurrentUser | null,
     accessToken: null as string | null,
+    language,
+    t: i18next.getFixedT(language),
   };
 
   // Get authorization header
@@ -102,16 +113,26 @@ export async function createContext(
 // Initialize tRPC
 const t = initTRPC.context<Context>().create({
   errorFormatter(opts) {
-    const { shape, error } = opts;
+    const { shape, ctx, error } = opts;
+    const translate = (key: string) => String(ctx ? ctx.t(key) : key);
+    const zodError =
+      error.code === "BAD_REQUEST" && error.cause instanceof ZodError
+        ? error.cause.flatten((issue) =>
+            translateValidationMessage(translate, issue.message),
+          )
+        : null;
+    const messages = zodError
+      ? [
+          ...zodError.formErrors,
+          ...Object.values(zodError.fieldErrors).flatMap((m) => m ?? []),
+        ]
+      : [];
     return {
       ...shape,
+      message: messages[0] ?? shape.message,
       data: {
         ...shape.data,
-        zodError:
-          // Only show zod errors for bad request errors
-          error.code === "BAD_REQUEST" && error.cause instanceof ZodError
-            ? error.cause.flatten()
-            : null,
+        zodError,
       },
     };
   },
@@ -122,7 +143,7 @@ const authMiddleware = t.middleware(({ next, ctx }) => {
   if (!ctx.user) {
     throw new TRPCError({
       code: "UNAUTHORIZED",
-      message: "Not authenticated",
+      message: ctx.t("errors:notAuthenticated"),
     });
   }
 

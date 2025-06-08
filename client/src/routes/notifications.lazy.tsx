@@ -1,15 +1,10 @@
 import { NotificationList } from "@/features/notifications/components/NotificationList";
 import { InfiniteScroll } from "@/features/shared/components/InfiniteScroll";
 import { trpc } from "@/router";
-import { createFileRoute, redirect } from "@tanstack/react-router";
+import { createLazyFileRoute } from "@tanstack/react-router";
 
-export const Route = createFileRoute("/notifications/")({
+export const Route = createLazyFileRoute("/notifications")({
   component: NotificationsPage,
-  loader: async ({ context: { trpcQueryUtils } }) => {
-    const { currentUser } = await trpcQueryUtils.auth.currentUser.ensureData();
-    if (!currentUser) return redirect({ to: "/login" });
-    await trpcQueryUtils.notifications.feed.prefetchInfinite({});
-  },
 });
 
 function NotificationsPage() {

@@ -16,6 +16,7 @@ import { userCredentialsSchema } from "@advanced-react/shared/schema/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "@tanstack/react-router";
 import { useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import { z } from "zod";
 
 const registerCredentialSchema = userCredentialsSchema;
@@ -25,6 +26,7 @@ export function RegisterForm() {
   const { toast } = useToast();
   const utils = trpc.useUtils();
   const router = useRouter();
+  const { t } = useTranslation("auth");
   const form = useForm<RegisterFormData>({
     resolver: zodResolver(registerCredentialSchema),
     defaultValues: {
@@ -38,13 +40,13 @@ export function RegisterForm() {
       await utils.auth.currentUser.invalidate();
       router.navigate({ to: "/" });
       toast({
-        title: "Signed up",
-        description: "You have been signed up",
+        title: t("register.toast.successTitle"),
+        description: t("register.toast.successDescription"),
       });
     },
     onError: (error) => {
       toast({
-        title: "Failed to register",
+        title: t("register.toast.errorTitle"),
         description: error.message,
         variant: "destructive",
       });
@@ -62,7 +64,7 @@ export function RegisterForm() {
             name="name"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Name</FormLabel>
+                <FormLabel>{t("fields.name")}</FormLabel>
                 <FormControl>
                   <Input {...field} type="text" placeholder="john doe" />
                 </FormControl>
@@ -75,7 +77,7 @@ export function RegisterForm() {
             name="email"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Email</FormLabel>
+                <FormLabel>{t("fields.email")}</FormLabel>
                 <FormControl>
                   <Input
                     {...field}
@@ -92,7 +94,7 @@ export function RegisterForm() {
             name="password"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Password</FormLabel>
+                <FormLabel>{t("fields.password")}</FormLabel>
                 <FormControl>
                   <Input {...field} type="password" placeholder="*********" />
                 </FormControl>
@@ -105,10 +107,12 @@ export function RegisterForm() {
             className="my-2 w-full"
             disabled={registerMutation.isPending}
           >
-            {registerMutation.isPending ? "Registering ..." : "Register"}
+            {registerMutation.isPending
+              ? t("register.submitting")
+              : t("register.submit")}
           </Button>
           <Link to="/login" variant="ghost" className="justify-center py-1">
-            Already have an account? Login
+            {t("register.hasAccount")}
           </Link>
         </form>
       </Card>

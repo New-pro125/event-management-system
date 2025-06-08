@@ -1,0 +1,8 @@
+{
+  "user_attending_experience": "{{name}} سيحضر فعاليتك",
+  "user_unattending_experience": "{{name}} لن يحضر فعاليتك بعد الآن",
+  "user_commented_experience": "علّق {{name}} على فعاليتك",
+  "user_followed_user": "بدأ {{name}} بمتابعتك",
+  "user_kicked_experience": "قام {{name}} بإزالتك من الفعالية",
+  "default": "إشعار جديد"
+}

@@ -1,6 +1,7 @@
 import { and, count, desc, eq } from "drizzle-orm";
 import { z } from "zod";
 
+import { TFunction } from "i18next";
 import { db } from "../../database";
 import { protectedProcedure, router } from "../../trpc";
 import { DEFAULT_NOTIFICATION_LIMIT } from "../../utils/constants";
@@ -49,10 +50,8 @@ export const notificationRouter = router({
 
       const notificationsWithContent = notifications.map((notification) => ({
         ...notification,
-        content: getNotificationContent(notification),
+        content: getNotificationContent(notification, ctx.t),
       }));
-
-      console.log(notificationsWithContent);
 
       return {
         notifications: notificationsWithContent,
@@ -93,20 +92,17 @@ function getNotificationContent(
   notification: Notification & {
     fromUser: Pick<User, "name"> | null;
   },
+  t: TFunction,
 ): string {
-  console.log(notification.type);
+  const params = { name: notification.fromUser?.name ?? "" };
   switch (notification.type) {
     case "user_attending_experience":
-      return `${notification.fromUser?.name} is attending your experience`;
     case "user_unattending_experience":
-      return `${notification.fromUser?.name} is no longer attending your experience`;
     case "user_commented_experience":
-      return `${notification.fromUser?.name} commented on your experience`;
     case "user_followed_user":
-      return `${notification.fromUser?.name} followed you`;
     case "user_kicked_experience":
-      return `${notification.fromUser?.name} kicked you from the experience`;
+      return t(`notifications:${notification.type}`, params);
     default:
-      return "New notification";
+      return t("notifications:default");
   }
 }

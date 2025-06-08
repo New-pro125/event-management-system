@@ -32,7 +32,12 @@ export function ExperienceFavoriteButton({
       disabled={favoriteMutation.isPending || unfavoriteMutation.isPending}
     >
       <Heart
-        className={cn("h-6 w-6", isFavorite && "fill-red-500 text-red-500")}
+        className={cn(
+          "h-6 w-6",
+          isFavorite
+            ? "fill-red-500 text-red-500"
+            : "dark:text-primary-500 text-secondary-500",
+        )}
       />
       <span>{favoritesCount}</span>
     </Button>

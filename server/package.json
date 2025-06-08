@@ -12,13 +12,15 @@
     "@advanced-react/shared": "workspace:*",
     "@trpc/server": "11.0.0-rc.645",
     "bcryptjs": "^2.4.3",
-    "better-sqlite3": "^11.5.0",
+    "better-sqlite3": "^13.0.3",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "drizzle-orm": "^0.36.4",
     "drizzle-zod": "^0.5.1",
     "express": "^4.21.1",
+    "i18next": "^26.4.2",
+    "i18next-http-middleware": "^3.9.9",
     "jsonwebtoken": "^9.0.0"
   },
   "devDependencies": {

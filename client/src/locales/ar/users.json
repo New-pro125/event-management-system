@@ -1,0 +1,31 @@
+{
+  "edit": {
+    "trigger": "تعديل الملف الشخصي",
+    "title": "تعديل الملف الشخصي",
+    "name": "الاسم",
+    "bio": "نبذة",
+    "image": "الصورة",
+    "toast": {
+      "successTitle": "تم تعديل الملف الشخصي بنجاح",
+      "successDescription": "تم تعديل الملف الشخصي بنجاح",
+      "errorTitle": "فشل تعديل الملف الشخصي"
+    }
+  },
+  "follow": {
+    "follow": "متابعة",
+    "unfollow": "إلغاء المتابعة",
+    "failed": "فشلت متابعة المستخدم",
+    "unfollowFailed": "فشل إلغاء متابعة المستخدم"
+  },
+  "list": {
+    "empty": "لم يتم العثور على مستخدمين"
+  },
+  "profile": {
+    "experiences": "الفعاليات",
+    "hostStats": "إحصاءات المضيف",
+    "followers": "المتابعون",
+    "following": "المتابَعون",
+    "followersHeading": "المتابعون ({{total}})",
+    "followingHeading": "المتابَعون ({{total}})"
+  }
+}

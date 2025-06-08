@@ -1,9 +1,8 @@
 import { ExperienceForm } from "@/features/experiences/components/ExperienceForm";
 import Card from "@/features/shared/components/ui/Card";
 import { iSTRPCClientError, router, trpc } from "@/router";
-import { Experience } from "@advanced-react/server/database/schema";
 import { createFileRoute, notFound, redirect } from "@tanstack/react-router";
-import { z } from "zod";
+import { useTranslation } from "react-i18next";
 
 export const Route = createFileRoute("/experiences/$experienceId/edit")({
   component: EditPage,
@@ -12,12 +11,12 @@ export const Route = createFileRoute("/experiences/$experienceId/edit")({
     const { currentUser } = await trpcQueryUtils.auth.currentUser.ensureData();
     try {
       const experience = await trpcQueryUtils.experiences.byId.ensureData({
-        id: params.experienceId,
+        id: Number(params.experienceId),
       });
       if (!currentUser || currentUser.id !== experience.userId) {
         throw redirect({
           to: "/experiences/$experienceId",
-          params: { experienceId: params.experienceId },
+          params: { experienceId: Number(params.experienceId) },
         });
       }
     } catch (error) {
@@ -32,17 +31,18 @@ export const Route = createFileRoute("/experiences/$experienceId/edit")({
 function EditPage() {
   const { experienceId } = Route.useParams();
   const [experience] = trpc.experiences.byId.useSuspenseQuery({
-    id: experienceId,
+    id: Number(experienceId),
   });
+  const { t } = useTranslation("experiences");
   function navigateToExperience() {
     router.navigate({
       to: "/experiences/$experienceId",
-      params: { experienceId },
+      params: { experienceId: Number(experienceId) },
     });
   }
   return (
     <main className="space-y-4">
-      <h1 className="text-2xl font-bold">Edit Experience</h1>
+      <h1 className="text-2xl font-bold">{t("pages.edit")}</h1>
       <Card>
         <ExperienceForm
           experience={experience}

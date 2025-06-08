@@ -1,12 +1,14 @@
-import Card from "@/features/shared/components/ui/Card";
-import { CommentForList, CommentOptimistic } from "../types";
-import { useState } from "react";
-import CommentEditForm from "./CommentEditForm";
-import { Button } from "@/features/shared/components/ui/Button";
-import CommentDelete from "./CommentDelete";
-import { UserAvatar } from "@/features/users/components/UserAvatar";
-import Link from "@/features/shared/components/ui/Link";
 import { useCurrentUser } from "@/features/auth/hooks/useCurrentUser";
+import { Button } from "@/features/shared/components/ui/Button";
+import Card from "@/features/shared/components/ui/Card";
+import Link from "@/features/shared/components/ui/Link";
+import { UserAvatar } from "@/features/users/components/UserAvatar";
+import { useFormatters } from "@/lib/i18n/useFormatters";
+import { useState } from "react";
+import { useTranslation } from "react-i18next";
+import { CommentForList, CommentOptimistic } from "../types";
+import CommentDelete from "./CommentDelete";
+import CommentEditForm from "./CommentEditForm";
 import { CommentLikeButton } from "./CommentLikeButton";
 
 type CommentCardProps = {
@@ -30,6 +32,7 @@ export function CommentCard({ comment }: CommentCardProps) {
 
 type CommentCardHeaderProps = Pick<CommentCardProps, "comment">;
 function CommentCardHeader({ comment }: CommentCardHeaderProps) {
+  const { formatDateTime } = useFormatters();
   return (
     <div className="flex items-center gap-2">
       <Link
@@ -40,7 +43,7 @@ function CommentCardHeader({ comment }: CommentCardHeaderProps) {
         <UserAvatar user={comment.user} />
       </Link>
       <time className="text-sm text-neutral-500">
-        {new Date(comment.createdAt).toLocaleString()}
+        {formatDateTime(comment.createdAt)}
       </time>
     </div>
   );
@@ -58,6 +61,7 @@ function CommentCardButtons({
   setIsEditing,
   comment,
 }: CommentCardButtonsProps) {
+  const { t } = useTranslation("common");
   const { currentUser } = useCurrentUser();
   const isCommentOwner = currentUser?.id === comment.userId;
   const isExperienceOwner = currentUser?.id === comment.experience.userId;
@@ -69,7 +73,7 @@ function CommentCardButtons({
           onClick={() => setIsEditing(true)}
           disabled={(comment as CommentOptimistic).optimistic}
         >
-          Edit
+          {t("actions.edit")}
         </Button>
       )}
       {(isCommentOwner || isExperienceOwner) && (

@@ -10,6 +10,7 @@ import {
 } from "@/features/shared/components/ui/Form";
 import Input from "@/features/shared/components/ui/Input";
 import { MultiSelect } from "@/features/shared/components/ui/MultiSelect";
+import { useTagLabel } from "@/features/tags/hooks/useTagLabel";
 import { Tag } from "@advanced-react/server/database/schema";
 import {
   ExperienceFilterParams,
@@ -18,6 +19,7 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Search } from "lucide-react";
 import { useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 
 type ExperienceFiltersProps = {
   onFiltersChange: (filters: ExperienceFilterParams) => void;
@@ -30,6 +32,8 @@ export function ExperienceFilters({
   tags,
   initialFilters,
 }: ExperienceFiltersProps) {
+  const { t } = useTranslation("experiences");
+  const getTagLabel = useTagLabel();
   const form = useForm<ExperienceFilterParams>({
     resolver: zodResolver(experienceFiltersSchema),
     defaultValues: initialFilters,
@@ -51,7 +55,7 @@ export function ExperienceFilters({
     <Form {...form}>
       <Card>
         <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
-          <div className="flex flex-row gap-2">
+          <div className="flex flex-col gap-2 lg:flex-row">
             <FormField
               control={form.control}
               name="q"
@@ -62,7 +66,7 @@ export function ExperienceFilters({
                       {...field}
                       type="search"
                       value={field.value ?? ""}
-                      placeholder="Search experiences ..."
+                      placeholder={t("filters.searchPlaceholder")}
                     />
                   </FormControl>
                   <FormMessage />
@@ -89,13 +93,13 @@ export function ExperienceFilters({
               <MultiSelect
                 options={tags.map((tag) => ({
                   value: tag.id.toString(),
-                  label: tag.name,
+                  label: getTagLabel(tag),
                 }))}
                 onValueChange={(tags) => {
                   field.onChange(tags.map(Number));
                 }}
                 defaultValue={field.value?.map((tag) => tag.toString())}
-                placeholder="Select tags..."
+                placeholder={t("filters.tagsPlaceholder")}
               />
             )}
           />

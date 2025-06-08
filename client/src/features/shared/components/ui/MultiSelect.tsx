@@ -5,6 +5,7 @@ import { ButtonHTMLAttributes, ComponentType, useState } from "react";
 
 import { cn } from "@/lib/utils/cn";
 
+import { useTranslation } from "react-i18next";
 import { Badge } from "./Badge";
 import { Button } from "./Button";
 import {
@@ -69,13 +70,14 @@ interface MultiSelectProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 export function MultiSelect({
   options,
   onValueChange,
+  placeholder,
   defaultValue = [],
-  placeholder = "Select options",
   maxCount = 3,
   modalPopover = false,
   className,
   ...props
 }: MultiSelectProps) {
+  const { t } = useTranslation("ui");
   const [selectedValues, setSelectedValues] = useState<string[]>(defaultValue);
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
 
@@ -137,11 +139,11 @@ export function MultiSelect({
                   return (
                     <Badge key={value}>
                       {IconComponent && (
-                        <IconComponent className="mr-2 h-4 w-4" />
+                        <IconComponent className="me-2 h-4 w-4" />
                       )}
                       {option?.label}
                       <XCircle
-                        className="ml-2 h-4 w-4 cursor-pointer"
+                        className="ms-2 h-4 w-4 cursor-pointer"
                         onClick={(event) => {
                           event.stopPropagation();
                           toggleOption(value);
@@ -152,9 +154,11 @@ export function MultiSelect({
                 })}
                 {selectedValues.length > maxCount && (
                   <Badge>
-                    {`+ ${selectedValues.length - maxCount} more`}
+                    {t("multiSelect.more", {
+                      total: selectedValues.length - maxCount,
+                    })}
                     <XCircle
-                      className="ml-2 h-4 w-4 cursor-pointer"
+                      className="ms-2 h-4 w-4 cursor-pointer"
                       onClick={(event) => {
                         event.stopPropagation();
                         clearExtraOptions();
@@ -181,7 +185,7 @@ export function MultiSelect({
           ) : (
             <div className="mx-auto flex w-full items-center justify-between">
               <span className="mx-2 font-normal text-neutral-500 dark:text-neutral-400">
-                {placeholder}
+                {placeholder ?? t("multiselect.placeholder")}
               </span>
               <ChevronDown className="mx-2 h-4 cursor-pointer" />
             </div>
@@ -203,7 +207,7 @@ export function MultiSelect({
               >
                 <div
                   className={cn(
-                    "border-primary mr-2 flex h-4 w-4 items-center justify-center rounded-sm border",
+                    "border-primary me-2 flex h-4 w-4 items-center justify-center rounded-sm border",
                     selectedValues.length === options.length
                       ? "bg-primary text-primary-foreground"
                       : "opacity-50 [&_svg]:invisible",
@@ -211,7 +215,7 @@ export function MultiSelect({
                 >
                   <CheckIcon className="h-4 w-4" />
                 </div>
-                <span>(Select All)</span>
+                <span>(t("multiSelect.selectAll"))</span>
               </CommandItem>
               {options.map((option) => {
                 const isSelected = selectedValues.includes(option.value);
@@ -223,7 +227,7 @@ export function MultiSelect({
                   >
                     <div
                       className={cn(
-                        "border-primary mr-2 flex h-4 w-4 items-center justify-center rounded-sm border",
+                        "border-primary me-2 flex h-4 w-4 items-center justify-center rounded-sm border",
                         isSelected
                           ? "bg-primary text-primary-foreground"
                           : "opacity-50 [&_svg]:invisible",
@@ -231,7 +235,7 @@ export function MultiSelect({
                     >
                       <CheckIcon className="h-4 w-4" />
                     </div>
-                    {option.icon && <option.icon className="mr-2 h-4 w-4" />}
+                    {option.icon && <option.icon className="me-2 h-4 w-4" />}
                     <span>{option.label}</span>
                   </CommandItem>
                 );
@@ -246,7 +250,7 @@ export function MultiSelect({
                       onSelect={handleClear}
                       className="flex-1 cursor-pointer justify-center"
                     >
-                      Clear
+                      {t("multiSelect.clear")}
                     </CommandItem>
                     <Separator
                       orientation="vertical"
@@ -258,7 +262,7 @@ export function MultiSelect({
                   onSelect={() => setIsPopoverOpen(false)}
                   className="max-w-full flex-1 cursor-pointer justify-center"
                 >
-                  Close
+                  {t("multiSelect.close")}
                 </CommandItem>
               </div>
             </CommandGroup>

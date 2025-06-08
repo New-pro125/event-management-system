@@ -22,6 +22,7 @@ import { changePasswordSchema } from "@advanced-react/shared/schema/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import { z } from "zod";
 
 type ChangePasswordformData = z.infer<typeof changePasswordSchema>;
@@ -29,6 +30,7 @@ export function ChangePasswordDialog() {
   const [isOpen, setIsOpen] = useState(false);
   const { toast } = useToast();
   const utils = trpc.useUtils();
+  const { t } = useTranslation("auth");
   const form = useForm<ChangePasswordformData>({
     resolver: zodResolver(changePasswordSchema),
     defaultValues: {
@@ -45,13 +47,13 @@ export function ChangePasswordDialog() {
       form.reset();
       setIsOpen(false);
       toast({
-        title: "Password changed successfully",
-        description: "Your Password has been changed",
+        title: t("changePassword.toast.successTitle"),
+        description: t("changePassword.toast.successDescription"),
       });
     },
     onError: (err) => {
       toast({
-        title: "Failed to change Password",
+        title: t("changePassword.toast.errorTitle"),
         description: err.message,
         variant: "destructive",
       });
@@ -60,11 +62,11 @@ export function ChangePasswordDialog() {
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button>Update Password</Button>
+        <Button>{t("changePassword.trigger")}</Button>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className="max-w-[calc(100%-24px)] sm:w-fit">
         <DialogHeader>
-          <DialogTitle>Change Password</DialogTitle>
+          <DialogTitle>{t("changePassword.title")}</DialogTitle>
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={handleSubmit} className="space-y-4">
@@ -73,7 +75,7 @@ export function ChangePasswordDialog() {
               name="newPassword"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>New Password</FormLabel>
+                  <FormLabel>{t("changePassword.newPassword")}</FormLabel>
                   <FormControl>
                     <Input
                       type={"password"}
@@ -90,7 +92,7 @@ export function ChangePasswordDialog() {
               name="currentPassword"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Current Password</FormLabel>
+                  <FormLabel>{t("changePassword.currentPassword")}</FormLabel>
                   <FormControl>
                     <Input
                       type={"password"}
@@ -105,8 +107,8 @@ export function ChangePasswordDialog() {
             <DialogFooter>
               <Button type="submit" disabled={changePasswordMutation.isPending}>
                 {changePasswordMutation.isPending
-                  ? "Loading..."
-                  : "Change Password"}
+                  ? t("common:actions.loading")
+                  : t("changePassword.submit")}
               </Button>
             </DialogFooter>
           </form>
